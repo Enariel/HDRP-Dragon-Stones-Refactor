@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87f69d14e4eae649ac8c55b509dbba9, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
-  title: 
-  desc: 
-  id: 
+  title: Fireball
+  desc: Unleash a fireball towards your targeted enemy.
+  id: Mag_Fire_Fireball
   icon: {fileID: 0}
   forms: []
+  element: 3
   cooldown: 0.5
   cost: 0
-  castTime: 0.5
-  addCooldown: 0
+  castTime: 1
+  additionalCooldown: 0
+  duration: 0
+  circle: {fileID: 0}
+  mainEffect: {fileID: 0}

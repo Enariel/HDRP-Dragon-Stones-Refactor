@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* ============================================
- *                    Form
+ *                  Spell Form
  * --------------------------------------------
- *      This script functions as the archetype
- *  or base class for spell behaviours. Each
- *  spell can have one or many forms, which 
- *  will in turn, make up actions. 
+ *      Spell forms dictate how a spell should
+ *  appear, move, or otherwise interact and
+ *  function.
  *  ===========================================
  */
 namespace Dragon_Stones.Spell_System
 {
     [System.Serializable]
-    public abstract class Form
+    public abstract class Spell_Form : Form
     {
 
     }
