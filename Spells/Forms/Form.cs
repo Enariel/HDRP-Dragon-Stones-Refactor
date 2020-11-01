@@ -7,8 +7,9 @@ using UnityEngine;
  * --------------------------------------------
  *      This script functions as the archetype
  *  or base class for spell behaviours. Each
- *  spell can have one or many forms, which 
- *  will in turn, make up actions. 
+ *  spell will have many forms, which will, in
+ *  turn, make up the whole functionality of a
+ *  spell.
  *  ===========================================
  */
 namespace Dragon_Stones.Spell_System

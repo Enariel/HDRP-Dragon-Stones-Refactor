@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050d6b06811052b41b90a93e5f86949d, type: 3}
   m_Name: Spell
   m_EditorClassIdentifier: 
-  title: 
-  desc: 
-  id: 
-  cost: 0
-  duration: 0
+  title: Fireball
+  desc: Blast fireballs from your fingertips.
+  id: Mag_Fire_Fireball
+  cost: 10
+  duration: 10
   spellObj: []
   icon: {fileID: 0}
   rank: 15

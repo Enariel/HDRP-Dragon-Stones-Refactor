@@ -16,12 +16,17 @@ MonoBehaviour:
   desc: Unleash a fireball towards your targeted enemy.
   id: Mag_Fire_Fireball
   icon: {fileID: 0}
-  forms: []
+  mainPreFab: {fileID: 0}
+  forms:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   element: 3
   cooldown: 0.5
   cost: 0
   castTime: 1
+  castStartTime: 0
+  hasCastTime: 0
   additionalCooldown: 0
   duration: 0
-  circle: {fileID: 0}
-  mainEffect: {fileID: 0}
+  circle: {fileID: 6887436814889993184, guid: 39beface80baf5547b0081e155cda937, type: 3}
