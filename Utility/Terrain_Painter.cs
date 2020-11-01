@@ -6,14 +6,31 @@ namespace Dragon_Stones.TerrainPainting
 {
     public class Terrain_Painter : MonoBehaviour
     {
+        //Coordinates for where the splat on terrain should be as well as the index of the terrain layer
         [System.Serializable]
         public class SplatHeights
         {
             public int texIndex;
             public int startHeight;
+            public int overlap;
         }
 
         public SplatHeights[] splatHeights;
+
+        private void Normalize(float[] v)
+        {
+            float total = 0f;
+
+            for (int i = 0; i < v.Length; i++)
+            {
+                total += v[i];
+            }
+
+            for (int i = 0; i < v.Length; i++)
+            {
+                v[i] /= total;
+            }
+        }
 
         private void Start()
         {
@@ -29,17 +46,34 @@ namespace Dragon_Stones.TerrainPainting
                 for (int j = 0; j < terrainData.alphamapWidth; j++)
                 {
                     //get terrain height at each x and y 
-                    float terrainHeight = terrainData.GetHeight(j, i);
+                    float terrainHeight = terrainData.GetHeight(i, j);
 
                     float[] splat = new float[splatHeights.Length];
 
                     for (int k = 0; k < splatHeights.Length; k++)
                     {
-                        if (terrainHeight >= splatHeights[k].startHeight)
+                        float thisNoise = Mathf.Clamp(Mathf.PerlinNoise(j * 0.005f, i * 0.005f), .5f, 1f);
+
+                        float thisHeightStart = splatHeights[k].startHeight * thisNoise - splatHeights[k].overlap * thisNoise;
+                        
+                        float nextHeightStart = 0f;
+
+                        if (k != splatHeights.Length - 1)
+                        {
+                            nextHeightStart = splatHeights[k + 1].startHeight * thisNoise + splatHeights[k + 1].overlap * thisNoise;
+                        }
+
+                        if (k == splatHeights.Length - 1 && terrainHeight >= thisHeightStart)
+                        {
+                            splat[k] = 1;
+                        }
+                        else if (terrainHeight >= thisHeightStart && terrainHeight <= nextHeightStart)
                         {
                             splat[k] = 1;
                         }
                     }
+
+                    Normalize(splat);
 
                     for (int l = 0; l < splatHeights.Length; l++)
                     {
