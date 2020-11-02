@@ -1,4 +1,6 @@
-﻿/* ============================================
+﻿using UnityEngine;
+
+/* ============================================
  *              Player Stats
  * --------------------------------------------
  *      Extends Character Stats, has added 
@@ -10,11 +12,6 @@
  */
 namespace Dragon_Stones.Character.Stats.Player
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using Dragon_Stones.Events;
-    using Dragon_Stones.Game_Managers.Time;
     public enum PlayerGender
     {
         Nonbinary,
@@ -46,12 +43,6 @@ namespace Dragon_Stones.Character.Stats.Player
         //Event Handlers
         private void Start()
         {
-            Tick_System.OnTick += OnTick;
-        }
-
-        private void OnTick(object sender, Tick_System.OnTickEventArgs e)
-        {
-            RegenStats();
         }
 
         public override void RegenStats()

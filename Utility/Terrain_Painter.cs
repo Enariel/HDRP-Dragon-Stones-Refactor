@@ -16,6 +16,7 @@ namespace Dragon_Stones.TerrainPainting
         }
 
         public SplatHeights[] splatHeights;
+        public float jNoise, iNoise, xClamp, yClamp;
 
         private void Normalize(float[] v)
         {
@@ -30,6 +31,11 @@ namespace Dragon_Stones.TerrainPainting
             {
                 v[i] /= total;
             }
+        }
+
+        public float Map(float val, float sMin, float sMax, float mMin, float mMax)
+        {
+            return (val - sMin) * (mMax - mMin) / (sMax - sMin) + mMin;
         }
 
         private void Start()
@@ -52,7 +58,7 @@ namespace Dragon_Stones.TerrainPainting
 
                     for (int k = 0; k < splatHeights.Length; k++)
                     {
-                        float thisNoise = Mathf.Clamp(Mathf.PerlinNoise(j * 0.005f, i * 0.005f), .5f, 1f);
+                        float thisNoise = Map(Mathf.PerlinNoise(j * jNoise, i * iNoise), 0, 1, xClamp, yClamp);
 
                         float thisHeightStart = splatHeights[k].startHeight * thisNoise - splatHeights[k].overlap * thisNoise;
                         

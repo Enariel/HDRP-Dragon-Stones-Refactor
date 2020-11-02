@@ -1,4 +1,9 @@
-﻿/* ============================================
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Dragon_Stones.Events;
+
+/* ============================================
  *              Time Controller
  * --------------------------------------------
  *      This script dictates the day and night
@@ -11,24 +16,24 @@
  *  currently is.
  *  ===========================================
  */
-namespace Dragon_Stones.Game_Managers.Time
+namespace Dragon_Stones.Game_Managers.Time_System
 {
-    using System;
-    using System.Collections.Generic;
-    using UnityEngine;
-
     public class Time_Controller : MonoBehaviour
     {
+		#region Variables
 
-        //References
-        [Header("Light References")]
-        public Light sun, moon;
-        public Celestial_Parameters sunPresets, moonPresets;
+		//References
+		[Header("Light References")]
+        Light sun;
+        Light moon;
+        public Celestial_Parameters sunPresets;
+        public Celestial_Parameters moonPresets;
 
         //Variables
-        public bool pauseCycle;
-        [SerializeField, Range(0, 24)] private float timeOfDay; //Clamp values to 24 hour clock
-        [SerializeField] private float MINSPERDAY = 1f;
+        [SerializeField] private bool pauseCycle;
+        [SerializeField][Range(0, 24 * 60)] private int timeOfDay; //Clamp values to 24 hour clock
+        [SerializeField] private float timeSpeed = 1;
+
         [Header("Game Time")]
         [SerializeField] private int min;
         [SerializeField] private int hour;
@@ -37,6 +42,7 @@ namespace Dragon_Stones.Game_Managers.Time
         [SerializeField] private int month;
         [SerializeField] private int year = 1;
         private string dayName, monthName;
+
         [Header("Birthday")]
         [SerializeField] private int birthDay;
         [SerializeField] private int birthMonth;
@@ -46,45 +52,96 @@ namespace Dragon_Stones.Game_Managers.Time
         [SerializeField] private float moonModifier;
         [SerializeField] private bool isNight;
 
+        //Event Listeners
+        private Action<TickTimeArgs> tickListener;
 
-        private void Awake()
+		#endregion
+
+		#region Unity Methods
+
+		private void Awake()
         {
             //Get the sun and moon with tags. They should be in every scene. 
             sun = GameObject.FindGameObjectWithTag("Sun").GetComponent<Light>();
             moon = GameObject.FindGameObjectWithTag("Moon").GetComponent<Light>();
+
+            tickListener = new Action<TickTimeArgs>(OnTick);
         }
 
-        private void Update()
+		//Makes sure theres a sun, if not it makes one. 
+		private void OnValidate()
+        {
+            if (sun != null && moon != null)
+                return;
+            if (RenderSettings.sun != null)
+            {
+                sun = RenderSettings.sun;
+            }
+            else
+            {
+                Light[] lights = GameObject.FindObjectsOfType<Light>();
+                foreach (Light light in lights)
+                {
+                    if (light.type == LightType.Directional && light.CompareTag("Sun"))
+                    {
+                        sun = light;
+                        return;
+                    }
+                    if (light.type == LightType.Directional && light.CompareTag("Moon"))
+                    {
+                        moon = light;
+                        return;
+                    }
+                }
+            }
+        }
+
+
+        //Enable and disable listeners
+		private void OnEnable()
+		{
+            WorldEvents.StartListen("Tick", tickListener);
+		}
+
+		private void OnDisable()
+		{
+            WorldEvents.StopListen("Tick", tickListener);
+        }
+
+        #endregion
+
+        #region Event Methods
+
+        //On tick add time to the clock
+        private void OnTick(TickTimeArgs t)
         {
             if (sunPresets == null || moonPresets == null)
             {
                 return;
             }
-            if (Application.isPlaying)
+
+            if (!pauseCycle)
             {
-                if (!pauseCycle)
-                {
-                    //Time math
-                    timeOfDay += Time.deltaTime / (MINSPERDAY * 60) * 24;
-                    timeOfDay %= 24;
-                    UpdateLighting(timeOfDay / 24);
-                    UpdateClock();
-                    TrackCycle(timeOfDay / 24);
-                }
+                timeOfDay = Convert.ToInt32((t.tick * timeSpeed ) + (6 * 60));
+
+                //Update important game functions each tick
+                UpdateClock(timeOfDay);
+                UpdateLighting(timeOfDay / (24f * 60f));
             }
         }
 
-        //Keeps track of the time
-        private void UpdateClock()
+		#endregion
+
+		#region Time Keeping Methods
+		//Keeps track of the time
+		private void UpdateClock(int time)
         {
-            double minute = timeOfDay * 60;
-            minute = Math.Round(minute, 0);
-            min = (int)minute % 60;
-            hour = (int)minute / 60;
+            int min = time;
+            hour = min / 60;
             //turn over day
             //Has to be less than 24, but also not make a huge difference for the last minute on the clock in order for it to
             //Properly keep track of the day.
-            if (timeOfDay >= 23.99f)
+            if (hour == 24)
             {
                 day += 1;
                 timeOfDay = 0;
@@ -102,37 +159,44 @@ namespace Dragon_Stones.Game_Managers.Time
                 day = 0;
             }
 
+            TrackCycle(hour);
+            TrackMoons(day);
             UpdateCalender(day, week, month, year);
         }
-        private void TrackCycle(float timePercent)
+        private void TrackCycle(int hour)
         {
             //Bool for nighttime and for displaying cycle message
-            if (timePercent > .75f || timePercent < .25f)
+            if (hour > 18 || hour < 6)
             {
                 isNight = true;
+                WorldEvents.TriggerEvent("OnNightTime");
             }
-            else if (timePercent < .75f || timePercent > .25f)
-            {
+            else
+			{
                 isNight = false;
-            }
+                WorldEvents.TriggerEvent("OnDayTime");
+			}
             //Night event handler
         }
 
         private void TrackMoons(int day)
         {
-            //moon is full
-            if (day >= 13 && day <= 15)
+            //Moon is full for three days in the middle of the month
+            if (day > 13 && day < 15)
             {
                 moonModifier = 3f;
             }
-            else if (day == 28 || day <= 2)
+            //New Moon
+            else if (day == 28 || day < 2)
             {
                 moonModifier = 1.5f;
             }
+            //Half moon
             else
             {
                 moonModifier = 1;
             }
+            //Night bonus
             if (isNight == true)
             {
                 moonModifier *= 2;
@@ -148,15 +212,6 @@ namespace Dragon_Stones.Game_Managers.Time
             calWeek += 1;
             calMonth += 1;
             calYear += 1;
-
-            birthday = new List<int>();
-
-            int monthDay = calDay - (month * 28);
-            int monthWeek = calWeek - (month * 4);
-
-            birthday.Add(monthDay);
-            birthday.Add(calMonth);
-            birthday.Add(calYear);
 
             switch (day % 7)
             {
@@ -197,7 +252,6 @@ namespace Dragon_Stones.Game_Managers.Time
                     monthName = "Yüle";
                     break;
             }
-            TrackMoons(monthDay);
         }
 
         //Modifies the sun
@@ -223,32 +277,7 @@ namespace Dragon_Stones.Game_Managers.Time
                 RenderSettings.fogColor = moonPresets.fogColour.Evaluate(timePercent);
             }
         }
-        //Makes sure theres a sun, if not it makes one. 
-        private void OnValidate()
-        {
-            if (sun != null && moon != null)
-                return;
-            if (RenderSettings.sun != null)
-            {
-                sun = RenderSettings.sun;
-            }
-            else
-            {
-                Light[] lights = GameObject.FindObjectsOfType<Light>();
-                foreach (Light light in lights)
-                {
-                    if (light.type == LightType.Directional && light.CompareTag("Sun"))
-                    {
-                        sun = light;
-                        return;
-                    }
-                    if (light.type == LightType.Directional && light.CompareTag("Moon"))
-                    {
-                        moon = light;
-                        return;
-                    }
-                }
-            }
-        }
-    }
+
+		#endregion
+	}
 }
