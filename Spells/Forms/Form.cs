@@ -12,11 +12,11 @@ using UnityEngine;
  *  spell.
  *  ===========================================
  */
-namespace Dragon_Stones.Spell_System
+namespace Dragon_Stones.Spell_System.Forms
 {
     [System.Serializable]
-    public abstract class Form
+    public abstract class Form : MonoBehaviour
     {
-
+        public abstract void DoForm(InvokeSpell invoke, GameObject target);
     }
 }

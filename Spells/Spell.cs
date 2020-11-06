@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Dragon_Stones.Character.Stats;
 
 /* ============================================
  *                    Spell
@@ -16,169 +17,144 @@ using UnityEngine;
 
 namespace Dragon_Stones.Spell_System
 {
-
-    [CreateAssetMenu(menuName = "Spell", fileName = "Spell")]
-    public class Spell : ScriptableObject
+    #region Enums
+    //Which behaviours to add to the spell
+    public enum EffectForm
     {
-        #region Enums
-        [Flags]
-        public enum BehaviourForm
-        {
-            Passive = 1 << 0, //Doesn't cast but still does stuff
-            No_Target = 1 << 1, //No target needed
-            Must_Target = 1 << 2, //A thing must be targetted
-            Point_Target = 1 << 3, //No target needed, but aims towards mouse or char direction
-            AreaOfEffect = 1 << 4, //Area of Effect skill
-            Channelled = 1 << 5, //Does this have an incantation or charge time?
-            Instant = 1 << 6, //The ability is cast instantly
-            MoveRemain = 1 << 7 //Does this skill cancel movement input? Checking this allows move while casting.
-        }
+        Knockback,
+        Knockdown,
+        DoT,
+        LinearProj,
+        TrackingProj,
+        Blink,
+        AoE,
+        ModifyStat
+    }
+    //How is it cast
+    public enum CastForm
+    {
+        instant,
+        channel,
+        charge,
+    }
+    //Which stat is deducted or modified?
+    public enum CostStat
+    {
+        HP,
+        Phyr
+    }
+    //What kind of target style?
+    public enum TargetStyle
+    {
+        None,
+        Caster,
+        Target,
+        Point
+    }
+    //Elemental damage types
+    public enum Element
+    {
+        Physical = 1 << 0,
+        Water = 1 << 1,
+        Earth = 1 << 2,
+        Fire = 1 << 3,
+        Air = 1 << 4,
+        Dragon = 1 << 5
+    }
+    //What type of spell is it?
+    public enum CastStyle
+	{
+        Melee = 1 << 0,
+        Ranged = 1 << 1,
+        Magic = 1 << 2,
+	}
 
-        [Flags]
-        public enum TargetForm
-        {
-            Self = 1 << 0, //A self target skill
-            Enemy = 1 << 1, // An enemy is targetted
-            Ground = 1 << 2, //The ground is targetted
-            Ally = 1 << 3 //An ally is targetted
-        }
+    #endregion
 
-        [Flags] //What kind of target style?
-        public enum TargetStyle
-        {
-            Caster,
-            Target,
-            Point
-        }
+    [CreateAssetMenu(menuName = "Spell")]
+    public abstract class Spell : ScriptableObject
+    {
 
-        //Elemental damage types
-        public enum Element
-        {
-            None,
-            Water,
-            Earth,
-            Fire,
-            Air,
-            Dragon
-        }
-        #endregion
-
-        #region Booleans
-        public bool CanTargetSelf
-        {
-            get
-            {
-                return ((targetForms & TargetForm.Self) != 0);
-            }
-        }
-
-        public bool CanTargetEnemy
-        {
-            get
-            {
-                return ((targetForms & TargetForm.Enemy) != 0);
-            }
-        }
-
-        public bool CanTargetGround
-        {
-            get
-            {
-                return ((targetForms & TargetForm.Ground) != 0);
-            }
-        }
-
-        public bool CanTargetAlly
-        {
-            get
-            {
-                return ((targetForms & TargetForm.Ally) != 0);
-            }
-        }
-        #endregion
-
-        #region Scriptable Object Variables
         [Header("Spell Details")]
         [SerializeField] private string title;
         [SerializeField] private string desc;
-        [SerializeField] private string id;
-        [SerializeField] private float cost;
-        [SerializeField] private float duration;
-        [SerializeField] private GameObject[] spellObj;
-        [SerializeField] private Sprite icon;
-        [Range(1, 15)]public int rank = 15;
+        [Tooltip("In Ticks")]
+        [SerializeField] private int duration; //In ticks
+        [SerializeField] private GameObject[] spellObjs; //Should only be one except in the cases of 2H weapons
 
         [Header("Forms")]
-        [SerializeField] private BehaviourForm bForms;
-        [SerializeField] private TargetForm targetForms;
-        [SerializeField] private TargetStyle targets;
         [SerializeField] private Element element;
+        [SerializeField] private EffectForm effectForm;
+        [SerializeField] private TargetStyle target;
+        [SerializeField] private CastStyle castStyle;
+        [SerializeField] private CastForm castForm;
+        [SerializeField] private CostStat costStat;
+        [SerializeField] private SpellEffect[] spellEffects;
 
-        [Header("Events")]
-        [SerializeField] private List<SpellEvents> events = new List<SpellEvents>();
+		public string Title { get => title; }
+		public string Desc { get => desc; }
+		public int Duration { get => duration; }
+		public GameObject[] SpellObjs { get => spellObjs; }
+		public EffectForm EffectForm { get => effectForm; }
+		public TargetStyle Target { get => target; }
+        public CastStyle CastStyle { get => castStyle; }
+        public CastForm CastForm { get => castForm; }
+        public Element Element { get => element; }
+        public CostStat CostStat { get => costStat; }
+        public SpellEffect[] SpellEffects { get => spellEffects; }
+
+		#region Getters
+
+		#endregion
+
+		#region Unity Methods
+		void Awake()
+		{
+		}
+
+        void OnEnable()
+		{
+		}
+
+        void OnDisable()
+		{
+        }
         #endregion
+
+        public void Cast(Spell spell, GameObject caster)
+		{
+
+		}
     }
 
-    #region AoE Region
-    //Area of Effect struct
+    #region Spell Visuals and Sounds
+    // When an artist makes a visual effect, they generally make a GameObject Prefab.
+    // You can extend this base class to support different kinds of visual effects
+    // such as particle systems, post-processing screen effects, etc.
     [Serializable]
-    public struct AoEData
+    public class SpellEffect
     {
-        public enum CenterPoint
-        {
-            Caster,
-            Target,
-            Point,
-            Projectile,
-        }
-        public enum ShapeType
-        {
-            Circle,
-            Rect,
-            Cone
-        }
-
-        public CenterPoint center;
-        public ShapeType shape;
-
-        // circle shape
-        public int radius;
-
-        // rect shape
-        public int width;
-        public int distance;
-
-        public int maxTargets;
+        public VisualForm visual;
+        public SoundForm sound;
     }
-    #endregion
-
-    #region Spell Event Region
     [Serializable]
-    public class SpellEvents
+    public class VisualForm
     {
-        public enum Event
-        {
-            none,
-            OnSpellStart,
-            OnIncant,
-            OnIncantInterrupt,
-            OnIncantFinish,
-            OnHit
-        }
-
-        [SerializeField] private Event eventType;
-        [SerializeField] private List<Spell_Form> spellForms = new List<Spell_Form>();
+        public GameObject objFx;
+        public virtual void PlayEffect()
+		{
+            Debug.Log("Visual is playing");
+		}
     }
-    #endregion
-
-    #region Spell Form Data
     [Serializable]
-    public class SpellFormData
+    public class SoundForm
     {
-        public enum SpellForm
-        {
+        public AudioClip soundFx;
+        public virtual void PlayEffect()
+		{
+            Debug.Log("Audio is playing");
+		}
 
-        }
     }
     #endregion
 }

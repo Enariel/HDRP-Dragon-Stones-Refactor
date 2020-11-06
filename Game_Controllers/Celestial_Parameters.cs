@@ -8,5 +8,4 @@ public class Celestial_Parameters : ScriptableObject
     public Gradient ambientColour;
     public Gradient directionalColour;
     public Gradient fogColour;
-    
 }

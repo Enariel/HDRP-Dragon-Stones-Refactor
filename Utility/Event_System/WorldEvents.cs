@@ -165,6 +165,22 @@ namespace Dragon_Stones.Events
 			}
         }
 
-		#endregion
-	}
+        #endregion
+
+        #region Spell Event Region
+        [Serializable]
+        public class SpellEvents
+        {
+            public enum Event
+            {
+                none,
+                OnSpellStart,
+                OnIncant,
+                OnIncantInterrupt,
+                OnIncantFinish,
+                OnHit
+            }
+        }
+        #endregion
+    }
 }

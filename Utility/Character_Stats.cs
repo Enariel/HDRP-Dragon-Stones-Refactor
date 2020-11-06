@@ -1,4 +1,9 @@
-﻿/* ============================================
+﻿using System;
+using UnityEngine;
+using Dragon_Stones.Events;
+using Dragon_Stones.Game_Managers.Time_System;
+
+/* ============================================
  *              Character Stats
  * --------------------------------------------
  *      This is an archetype struct-type class
@@ -11,13 +16,10 @@
  *  reference.
  *  ===========================================
  */
+
 namespace Dragon_Stones.Character.Stats
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using Dragon_Stones.Events;
-    public class Character_Stats : MonoBehaviour
+    public class Character_Stats : MonoBehaviour, IDamage
     {
         [Header("Cost Stats")]
         [SerializeField] private float startMaxHP;
@@ -29,13 +31,42 @@ namespace Dragon_Stones.Character.Stats
         [SerializeField] private float startMag;
         [SerializeField] private float startDex;
 
+        [Header("Events")]
+        private Action<TickTimeArgs> tickListener;
+
+
         public float StartMaxHP { get => startMaxHP; set => startMaxHP = value; }
         public float StartMaxPhyr { get => startMaxPhyr; set => startMaxPhyr = value; }
         public float StartStr { get => startStr; set => startStr = value; }
         public float StartMag { get => startMag; set => startMag = value; }
         public float StartDex { get => startDex; set => startDex = value; }
 
-        public virtual void RegenStats() { }
+		#region Unity Methods
+		private void Awake()
+		{
+            tickListener = new Action<TickTimeArgs>(OnTick);
+		}
 
-    }
+        //Enable and disable listeners
+        private void OnEnable()
+		{
+            WorldEvents.StartListen("Tick", tickListener);
+		}
+
+        private void OnDisable()
+		{
+            WorldEvents.StopListen("Tick", tickListener);
+		}
+
+		#endregion
+
+		public virtual void RegenStats() { }
+
+        public virtual void OnTick(TickTimeArgs tick) { }
+
+		public void ApplyDamage(Character_Stats target, int damage)
+		{
+            target = this;
+		}
+	}
 }
