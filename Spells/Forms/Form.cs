@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,9 +15,9 @@ using UnityEngine;
  */
 namespace Dragon_Stones.Spell_System.Forms
 {
-    [System.Serializable]
-    public abstract class Form : MonoBehaviour
+    [CreateAssetMenu(menuName ="Form")]
+    public abstract class Form : ScriptableObject
     {
-        public abstract void DoForm(InvokeSpell invoke, GameObject target);
+        public abstract IEnumerator DoForm(GameObject caster, List<GameObject> targets);
     }
 }

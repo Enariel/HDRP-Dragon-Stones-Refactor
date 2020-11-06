@@ -5,6 +5,7 @@ using System.Collections;
 using UnityEngine;
 using Dragon_Stones.Events;
 using Dragon_Stones.Game_Managers.Time_System;
+using System.Collections.Generic;
 /* ============================================
 *                   Name
 * --------------------------------------------
@@ -13,13 +14,15 @@ using Dragon_Stones.Game_Managers.Time_System;
 */
 namespace Dragon_Stones.Spell_System.Forms
 {
+	[CreateAssetMenu(fileName = "New Channel Form", menuName = "Form/Channel Form")]
 	public class Channel_Form : Form
 	{
-		private Action<TickTimeArgs> tickListener;
-		private int channelTime;
-		public override void DoForm(InvokeSpell invoke, GameObject target)
+		[SerializeField] private int channelTime;
+
+		public override IEnumerator DoForm(GameObject caster, List<GameObject> targets)
 		{
-			StartCoroutine(invoke.ChannelOrChargeCast(invoke.spell.Duration));
+			yield return new WaitForEndOfFrame();
+			Debug.Log(channelTime);
 		}
 	}
 }

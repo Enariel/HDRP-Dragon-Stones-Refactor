@@ -34,7 +34,8 @@ namespace Dragon_Stones
 			{
                 foreach (Spell spell in spells)
 				{
-                    spell.Cast(spell, player);
+                    Cast_Spell cs = new Cast_Spell(spell, player, spell.spellEvents);
+                    StartCoroutine(cs.OnCastStart());
 				}
 			}
 		}
