@@ -6,21 +6,16 @@
  *  utilize Unity's Nav Mesh Agent.
  *  ===========================================
  */
-namespace Dragon_Stones.Character.Player.Movement
+namespace Dragon_Stones.Character.Movement
 {
     using UnityEngine;
 
-    public class Player_Movement : MonoBehaviour
+    public class Player_Movement : Movement_Controller
     {
-        //References
-        public GameObject gameManager;
-        public Rigidbody playerBody;
-        public Camera playerCam;
-        public CharacterController controller;
-        public LayerMask groundMask;
-
+		#region
+		//References
+		public Camera playerCam;
         //Variables
-        //These are public because we want these to be modified later
         public int walkSpeed;
         public int runSpeed;
         public float jumpForce = 40f;
@@ -35,12 +30,13 @@ namespace Dragon_Stones.Character.Player.Movement
         private const float GRAVITY = -9.81f;
         private float groundCheckRadius = 0.4f;
         public bool run;
+		#endregion
 
-        // Start is called before the first frame update
-        void Start()
+		// Start is called before the first frame update
+		void Start()
         {
             //Obtain references
-            playerBody = GetComponent<Rigidbody>();
+            rb = GetComponent<Rigidbody>();
             controller = GetComponent<CharacterController>();
             groundCheck = this.transform;
             gameManager = GameObject.FindGameObjectWithTag("GameController");
@@ -55,7 +51,7 @@ namespace Dragon_Stones.Character.Player.Movement
 
             if (direction.magnitude >= .01f)
             {
-                if (run)
+                if (Input.GetButtonDown("Run"))
                 {
                     float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCam.transform.eulerAngles.y;
                     float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -64,6 +60,7 @@ namespace Dragon_Stones.Character.Player.Movement
                     Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
                     controller.Move(moveDir * runSpeed * Time.deltaTime);
+                    run = true;
                 }
                 else
                 {
@@ -74,19 +71,8 @@ namespace Dragon_Stones.Character.Player.Movement
                     Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
                     controller.Move(moveDir * walkSpeed * Time.deltaTime);
+                    run = false;
                 }
-            }
-        }
-
-        public void isRunning(float ctx)
-        {
-            if (ctx > .015f)
-            {
-                run = true;
-            }
-            else
-            {
-                run = false;
             }
         }
 

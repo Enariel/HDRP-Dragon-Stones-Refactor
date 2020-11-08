@@ -22,13 +22,7 @@ namespace Dragon_Stones.Game_Managers.Target
 
         private void Start()
         {
-            StartCoroutine(FindPlayerTarget(enemy, TargetRadius));
-        }
-
-        void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(enemy.transform.position, TargetRadius);
+            StartCoroutine(FindPlayerTarget());
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Dragon_Stones.Character.Stats;
-using System.Collections;
 using Dragon_Stones.Spell_System.Forms;
 
 /* ============================================
@@ -39,31 +37,17 @@ namespace Dragon_Stones.Spell_System
         AreaOfEffect = 1 << 0,
         Channeled = 1 << 1,
         CastTime = 1 << 2,
-        StopMovement = 1 << 3,
+        TurnTowardsEnemy = 1 << 3,
         Directional = 1 << 4,
-        AutoCast = 1 << 5,
-        ImmediateCast = 1 << 6,
-        DontStopMove = 1 << 7,
-        Passive = 1 << 8,
-        NoTarget = 1 << 9, //Doesn't need a target to be cast
-        PointTarget = 1 << 10, //Needs a position target
-        SomeTarget = 1 << 11, //Needs a specific gameobject target
+        DontStopMove = 1 << 5,
     } 
-    //How to target
-    [Flags]
-    public enum TargetType
-	{
-        Self = 1 << 0,
-        Enemy = 1 << 1,
-        Ground = 1 << 2
-    }
     //What to target
-    [Flags]
     public enum Target
 	{
-        Caster = 1 << 0,
-        Target = 1 << 1,
-        Point = 1 << 2
+        Caster = 1 << 0, //for heals or buffs
+        Target = 1 << 1, //for attacks and debuffs
+        Direction = 1 << 2, //for projectiles and melee
+        Point = 1 << 3, //For projectiles and AoE
     }
     //Elemental damage types
     public enum Element
@@ -80,84 +64,38 @@ namespace Dragon_Stones.Spell_System
     [CreateAssetMenu(menuName = "Spell", fileName = "New Spell")]
     public class Spell : ScriptableObject
     {
-        public bool canTargetSelf { get { return ((targetType & TargetType.Self) != 0); } }
-        public bool canTargetEnemy { get { return ((targetType & TargetType.Enemy) != 0); } }
-        public bool canTargetGround { get { return ((targetType & TargetType.Ground) != 0); } }
-        public bool AoE { get { return ((behaviours & Behaviour.AreaOfEffect) != 0); } }
-        public bool AutoCast { get { return ((behaviours & Behaviour.AutoCast) != 0); } }
-        public bool HasCastTime { get { return ((behaviours & Behaviour.CastTime) != 0); } }
-        public bool IsChanneled { get { return ((behaviours & Behaviour.Channeled) != 0); } }
-        public bool IsDirectional { get { return ((behaviours & Behaviour.Directional) != 0); } }
-        public bool DontStopMove { get { return ((behaviours & Behaviour.DontStopMove) != 0); } }
-        public bool IsImmediate { get { return ((behaviours & Behaviour.ImmediateCast) != 0); } }
-        public bool NoTarget { get { return ((behaviours & Behaviour.NoTarget) != 0); } }
-        public bool IsPassive { get { return ((behaviours & Behaviour.Passive) != 0); } }
-        public bool IsPointTarget { get { return ((behaviours & Behaviour.PointTarget) != 0); } }
-        public bool SomeTarget { get { return ((behaviours & Behaviour.SomeTarget) != 0); } }
-        public bool StopMove { get { return ((behaviours & Behaviour.StopMovement) != 0); } }
-
-
         //Simple spell information
         [Header("Spell Details")]
         public string title;
         public string id;
         public string desc;
         public Sprite icon;
-        [Tooltip("In Ticks")]
+        [Tooltip("In Seconds")]
         public int duration; //In ticks
         public int maxRange; //In unity units
-        public int coolDown; //In ticks
+        public int coolDown; //In tick
         public float modifierPercent; //This is a modifier most spells will take in, this should be changed per rank.
         [Range(15, 1)] private int rank = 15; //Every spell rank should start at 15.
         [Header("Forms")]
         public Element element; //This dictates its damage type
         public Behaviour behaviours; //This is the spells behaviours
-        public TargetType targetType;
-        public Target target;
-        public List<SpellEventData> spellEvents;
-    }
-
-    #region Spell Forms
-    //*********************************************
-    /* ============================================
-     *      Spell Form Data and Spell Event Data
-     * --------------------------------------------
-     *      -Spell Form Data
-     *      Spell form data takes in a a Form
-     *  scriptable object. This dictates various
-     *  behavious for the different events on a 
-     *  spell. 
-     *      -Spell Event Data
-     *      Spell event data takes in a list of
-     *  spell form data, this is a list of actions
-     *  that are executed on each spell event. 
-     *  ===========================================
-     */
-    //*********************************************
-    /* --------------------------------------------
-     *          Example of Forms actions
-     * --------------------------------------------
-     *  - Effect Forms
-     *      - Play Sound
-     *      - Visual
-     *  - Attach effect
-     *      - Adds an effect based on element
-     *      - Good for DoTs and Buffs/Debuffs
-     *  - Damage
-     *      - The official damage calculation
-     *  - Heal
-     *      - Heals target for specified amount
-     *  - Movement
-     *      - Knockback
-     *      - Knockup
-     *      - Move
-     *      - Blink/Teleports
-     *      - Stun
-     *      - Various other movement impedes
-     */
-    //*********************************************
-
-	#endregion
+        public bool needsEnemyTarget = false;
+        public bool needsCasterTarget = false;
+        public bool isPassive = false;
+        public AoEInfo aoeInfo;
+        [Tooltip("OnInvoke: Gathers information. Put forms here that pertain to information gathering, if any at all. E.g. AoE spells to set an area. This is also where main Visuals and sounds should be put, \n " +
+            "OnStart: The bulk of the spell. If a spell needs to be channeled THEN cast, make sure most of the information is here. If a spell needs to be channeled TO be cast, put the bulk of the forms in OnSuccess \n " +
+            "OnSuccess: If a channel succeeds in casting, all these forms will be performed. \n" +
+            "OnEnd: This signifies the spell is done. This can have ending animations or effects, as well as secondary effects post-channel. \n" +
+            "OnPassive: These forms can be invoked every .5s if isPassive is set to true. \n")]
+        public SpellEventData[] spellStages = new SpellEventData[6] { 
+            new SpellEventData(SpellEvent.OnInvoke, new List<Form>()), 
+            new SpellEventData(SpellEvent.OnStart, new List<Form>()),
+            new SpellEventData(SpellEvent.OnSuccess, new List<Form>()),
+            new SpellEventData(SpellEvent.OnEnd, new List<Form>()),
+            new SpellEventData(SpellEvent.OnPassive, new List<Form>()),
+            new SpellEventData(SpellEvent.OnProjectileHit, new List<Form>())};
+	}                                                                  
 
 	#region AoE Information
     [Serializable]
@@ -194,17 +132,27 @@ namespace Dragon_Stones.Spell_System
     [Serializable]
     public class SpellEventData
 	{
-        public SpellEvent spellEvent;
-        [SerializeField] public List<Form> forms;
+		[SerializeField] private SpellEvent spellEvent;
+		[SerializeField] private List<Form> forms;
+
+		public SpellEventData(SpellEvent spellEvent, List<Form> forms)
+		{
+			this.SpellEvent = spellEvent;
+			this.Forms = forms;
+		}
+
+		public List<Form> Forms { get => forms; set => forms = value; }
+		public SpellEvent SpellEvent { get => spellEvent; set => spellEvent = value; }
 	}
     public enum SpellEvent
 	{
         None,
-        OnCastStart,
-        OnSpellStart,
-        OnSpellChannel,
-        OnSpellChannelSucceed,
-        OnSpellEnd
+        OnInvoke, //The start of the cast
+        OnStart, //The forms right AFTEr a successful cast
+        OnSuccess, //If success on channel
+        OnEnd, //End the spell with a reset on the forms
+        OnPassive, //Passive is always invoked.
+        OnProjectileHit
 	}
 	#endregion
 }

@@ -17,21 +17,12 @@ namespace Dragon_Stones.Game_Managers.Target
         #region Variables
 
         //References
-        public GameObject player;
         //Variables
-        [SerializeField] private LayerMask layer;
         #endregion
 
-        private void Start()
+        public void Start()
 		{
-            layer = LayerMask.GetMask("Enemy");
-            StartCoroutine(FindValidTargets(player, TargetRadius, layer));
-		}
-
-        void OnDrawGizmosSelected()
-		{
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(player.transform.position, TargetRadius);
+            StartCoroutine(FindValidTargets());
 		}
     }
 }

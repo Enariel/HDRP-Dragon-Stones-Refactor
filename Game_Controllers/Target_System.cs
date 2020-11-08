@@ -16,24 +16,30 @@ namespace Dragon_Stones.Game_Managers.Target
     {
         #region Variables
         //Variables
-        [SerializeField] private float targetRadius = 1f;
+        [SerializeField] private float targetRadius;
         [SerializeField] private float updateTime = .1f;
+        [SerializeField] private LayerMask playerLayer;
+        [SerializeField] private LayerMask enemyLayer;
 
         public List<GameObject> targets;
         public GameObject mainTarget;
-		#endregion
-
-		#region Unity Methods
-
         #endregion
 
-		public IEnumerator FindValidTargets(GameObject aCenter, float aTargetRadius, LayerMask aLayer)
+        #region Unity Methods
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, targetRadius);
+        }
+        #endregion
+
+        public IEnumerator FindValidTargets()
 		{
 			while (true)
 			{
                 yield return new WaitForSeconds(updateTime);
 
-                Collider[] targetColliders = Physics.OverlapSphere(FindCenter(aCenter), aTargetRadius, aLayer); ;
+                Collider[] targetColliders = Physics.OverlapSphere(this.gameObject.transform.position, targetRadius, enemyLayer); ;
                 targets = new List<GameObject>();
 
                 foreach (Collider collider in targetColliders)
@@ -49,13 +55,13 @@ namespace Dragon_Stones.Game_Managers.Target
             }
         }
 
-        public IEnumerator FindPlayerTarget(GameObject aCenter, float aTargetRadius)
+        public IEnumerator FindPlayerTarget()
 		{
             while (true)
             {
                 yield return new WaitForSeconds(updateTime);
 
-                Collider[] targetColliders = Physics.OverlapSphere(FindCenter(aCenter), aTargetRadius); ;
+                Collider[] targetColliders = Physics.OverlapSphere(this.gameObject.transform.position, targetRadius, playerLayer); ;
 
                 targets = new List<GameObject>();
 
@@ -73,13 +79,5 @@ namespace Dragon_Stones.Game_Managers.Target
                 }
             }
         }
-
-        private Vector3 FindCenter(GameObject centerTarget)
-		{
-            return centerTarget.transform.position;
-		}
-
-        public float TargetRadius { get => targetRadius; }
-        public float UpdateTime { get => updateTime; }
     }
 }
