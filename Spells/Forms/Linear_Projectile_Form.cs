@@ -31,11 +31,11 @@ namespace Dragon_Stones.Spell_System.Forms
 			var ProjInst = Instantiate(projectile, casterPos + offset, caster.transform.rotation);
 			var linearInst = ProjInst.AddComponent<Projectile>();
 
-			yield return new WaitForEndOfFrame();
-
 			linearInst.castInst = casterSpell;
 			linearInst.targetPos = targetPos;
 			yield return linearInst.FireProjectile(speed);
+
+			yield return new WaitForEndOfFrame();
 
 			yield return null;
 			Debug.Log("Returned null in Projectile Form");

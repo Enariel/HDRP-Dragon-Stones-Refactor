@@ -2,17 +2,19 @@
 
 using UnityEngine;
 using Dragon_Stones.Character.Stats;
+using Dragon_Stones.Spell_System;
 
 /* ============================================
-*                   Name
+*                   IDamage
 * --------------------------------------------
-*           - Summary of script - 
+*       Damage interface script for deciding
+*   what happens when an object is damaged.
 *  ===========================================
 */
-namespace Dragon_Stones
+namespace Dragon_Stones.Game_Managers
 {
     public interface IDamage
     {
-        void ApplyDamage(Character_Stats target, int damage);
+        void OnDamage(Damage_Calculation dmgCalc);
     }
 }

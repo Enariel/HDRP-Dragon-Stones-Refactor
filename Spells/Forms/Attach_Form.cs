@@ -1,6 +1,7 @@
 ﻿//Copyright (c) FuchsFarbe
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /* ============================================
@@ -20,16 +21,15 @@ namespace Dragon_Stones.Spell_System.Forms
 		//References
 
 		//Variables
-
+		public GameObject[] effectObjs;
 		#endregion
 		public override IEnumerator DoForm(Cast_Spell casterSpell, GameObject target, Vector3 targetPos)
 		{
 			yield return new WaitForSeconds(.1f);
 			Debug.Log("Attached a buff");
-			AddFormToTarget(casterSpell.SpellData.element, target);
+			AddFormToTarget(casterSpell.SpellData.element, target, casterSpell);
 		}
-
-		private void AddFormToTarget(Element elem, GameObject targetObj)
+		private void AddFormToTarget(Element elem, GameObject targetObj, Cast_Spell castInst)
 		{
 			switch (elem)
 			{

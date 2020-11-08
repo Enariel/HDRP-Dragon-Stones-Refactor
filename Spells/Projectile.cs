@@ -38,9 +38,16 @@ namespace Dragon_Stones.Spell_System.Forms
 		}
 		public void OnTriggerEnter(Collider other)
 		{
-			if (other.gameObject.tag != castInst.Caster.tag)
+			if (other.gameObject != castInst.Caster)
 			{
-				StartCoroutine(castInst.OnProjHit(castInst, other.gameObject));
+				if (other.gameObject.CompareTag("Ground"))
+				{
+					StartCoroutine(castInst.OnProjHit(null));
+				}
+				else
+				{
+					StartCoroutine(castInst.OnProjHit(other.gameObject));
+				}
 
 				ParticleSystem ps = this.gameObject.GetComponent<ParticleSystem>();
 				if (ps != null)

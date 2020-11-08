@@ -246,19 +246,16 @@ namespace Dragon_Stones.Spell_System
 			}
 		}
 		//If a projectile form hits a thing
-		public IEnumerator OnProjHit(Cast_Spell castInst, GameObject target)
+		public IEnumerator OnProjHit(GameObject target)
 		{
 			Debug.Log("On hit activated");
 
-			if (ProcessForms(SpellEventDict[ON_PROJ_HIT]) != null)
+			if (ProcessForms(SpellEventDict[ON_PROJ_HIT]) != null && target != null)
 			{
 				foreach(Form form in SpellEventDict[ON_PROJ_HIT])
 				{
-					yield return form.DoForm(castInst, target, target.transform.position);
+					yield return form.DoForm(this, target, target.transform.position);
 				}
-
-				yield return OnEnd();
-				Debug.Log("Processing projectile forms");
 			}
 		}
 		//Process forms in each state

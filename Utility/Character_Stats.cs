@@ -1,7 +1,11 @@
-﻿using System;
+﻿//copyright (c) FuchsFarbe
+
+using System;
 using UnityEngine;
 using Dragon_Stones.Events;
 using Dragon_Stones.Game_Managers.Time_System;
+using Dragon_Stones.Spell_System;
+using Dragon_Stones.Game_Managers;
 
 /* ============================================
  *              Character Stats
@@ -64,9 +68,9 @@ namespace Dragon_Stones.Character.Stats
 
         public virtual void OnTick(TickTimeArgs tick) { }
 
-		public void ApplyDamage(Character_Stats target, int damage)
+		public void OnDamage(Damage_Calculation dmgCalc)
 		{
-            target = this;
+			throw new NotImplementedException();
 		}
 	}
 }

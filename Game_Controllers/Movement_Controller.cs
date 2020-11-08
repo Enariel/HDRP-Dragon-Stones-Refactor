@@ -33,7 +33,7 @@ namespace Dragon_Stones.Character.Movement
 		public IEnumerator Look(Transform target)
 		{
 			yield return new WaitForEndOfFrame();
-			this.gameObject.transform.LookAt(target);
+			this.gameObject.transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
 		}
 	}
 }

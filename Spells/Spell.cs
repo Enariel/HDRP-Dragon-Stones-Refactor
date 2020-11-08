@@ -40,6 +40,7 @@ namespace Dragon_Stones.Spell_System
         TurnTowardsEnemy = 1 << 3,
         Directional = 1 << 4,
         DontStopMove = 1 << 5,
+        BuffOrDebuff = 1 << 6,
     } 
     //What to target
     public enum Target
