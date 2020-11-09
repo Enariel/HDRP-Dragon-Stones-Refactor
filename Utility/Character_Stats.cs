@@ -4,7 +4,6 @@ using System;
 using UnityEngine;
 using Dragon_Stones.Events;
 using Dragon_Stones.Game_Managers.Time_System;
-using Dragon_Stones.Spell_System;
 using Dragon_Stones.Game_Managers;
 
 /* ============================================
@@ -35,6 +34,10 @@ namespace Dragon_Stones.Character.Stats
         [SerializeField] private float startMag;
         [SerializeField] private float startDex;
 
+        [Header("Defense Stats")]
+        [SerializeField] private float startPhysDef;
+        [SerializeField] private float startMagDef;
+
         [Header("Events")]
         private Action<TickTimeArgs> tickListener;
 
@@ -44,6 +47,8 @@ namespace Dragon_Stones.Character.Stats
         public float StartStr { get => startStr; set => startStr = value; }
         public float StartMag { get => startMag; set => startMag = value; }
         public float StartDex { get => startDex; set => startDex = value; }
+		public float StartPhysDef { get => startPhysDef; set => startPhysDef = value; }
+		public float StartMagDef { get => startMagDef; set => startMagDef = value; }
 
 		#region Unity Methods
 		private void Awake()
