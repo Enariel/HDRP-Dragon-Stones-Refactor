@@ -25,19 +25,7 @@ namespace Dragon_Stones.Spell_System.Forms
 		#endregion
 		public IEnumerator DoBuff(Cast spellInst, GameObject target, Vector3 targetPos)
 		{
-			var spellData = spellInst.Data;
-			Character_Stats targetStats = target.GetComponent<Character_Stats>();
-			int timer = 0;
-			//Duration based off of modifier and spell duration
-			while (timer < spellData.duration + (spellData.duration * spellData.modifierPercent))
-			{
-				if (targetStats)
-				{
-
-				}
-				yield return new WaitForSeconds(tickSeconds);
-				timer++;
-			}
+			yield break;
 		}
 	}
 }

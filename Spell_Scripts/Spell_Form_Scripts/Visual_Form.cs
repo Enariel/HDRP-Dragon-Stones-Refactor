@@ -26,8 +26,6 @@ namespace Dragon_Stones.Spell_System.Forms
 		#endregion
 		public override IEnumerator DoForm(Cast casterSpell, GameObject target, Vector3 targetPos)
 		{
-			targetAnimController = target.GetComponent<Animator>();
-			duration = casterSpell.Data.duration;
 			yield return null;
 		}
 	}

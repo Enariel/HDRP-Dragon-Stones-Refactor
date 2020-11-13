@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Dragon_Stones.Input;
+using System;
 
 /* ============================================
 *					Spellbook
@@ -21,11 +22,14 @@ namespace Dragon_Stones.Spell_System
         //References
         private GameObject player;
 		//Variables
+		private Dictionary<string, Ability> m_SpellMap = new Dictionary<string, Ability>();
+		[SerializeField] private List<Ability> abilities;
+		public string spellID = "";
 		#endregion
 
 		#region Input Events
 		//Main controls
-		private Dragon_Stones_Input inputMaps;
+		private Dragon_Stones_Input input;
 		//Individual events
 		private InputAction spell1;
 		private InputAction spell2;
@@ -60,13 +64,29 @@ namespace Dragon_Stones.Spell_System
 		#region Unity Methods
 		private void Awake()
 		{
-			inputMaps = new Dragon_Stones_Input();
+			//Empty dictionary and refill it
+			m_SpellMap.Clear();
+			foreach (Ability spell in abilities)
+			{
+				m_SpellMap.Add(spell.id, spell);
+			}
 
-			spell1 = inputMaps.Combat.Spell_1;
-			spell2 = inputMaps.Combat.Spell_2;
-			spell3 = inputMaps.Combat.Spell_3;
-			spell4 = inputMaps.Combat.Spell_4;
-			basicAttack = inputMaps.Combat.Basic_Attack;
+			//Input stuff
+			input = new Dragon_Stones_Input();
+
+			spell1 = input.Combat.Spell_1;
+			spell2 = input.Combat.Spell_2;
+			spell3 = input.Combat.Spell_3;
+			spell4 = input.Combat.Spell_4;
+
+			basicAttack = input.Combat.Basic_Attack;
+
+			spell1.performed += ctx => PlayerCast(ctx);
+		}
+		private void PlayerCast(InputAction.CallbackContext ctx)
+		{
+			//TODO: Get spell data from somewhere to cast the correct spell.
+			ExecuteSpell(m_SpellMap[spellID]);
 		}
 		void Start()
 		{
@@ -89,5 +109,9 @@ namespace Dragon_Stones.Spell_System
 			basicAttack.Disable();
 		}
 		#endregion
+		void ExecuteSpell(Ability aSpell)
+		{
+			StartCoroutine(aSpell.Execute(aSpell, player));
+		}
     }
 }

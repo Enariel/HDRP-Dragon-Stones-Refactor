@@ -12,35 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f74570877182246a86b1e08eaf92d4, type: 3}
   m_Name: Test_Spell
   m_EditorClassIdentifier: 
-  title: 
-  id: 
-  desc: 
+  title: Test_Spell
+  id: Test_Spell
+  desc: A test spell
   icon: {fileID: 0}
-  duration: 0
-  maxRange: 0
-  coolDown: 0
-  modifierPercent: 0
-  element: 0
-  behaviours: 0
-  needsEnemyTarget: 0
-  needsCasterTarget: 0
-  isPassive: 0
+  castTime: 1
+  duration: 1
+  coolDown: 1
+  maxRange: 10
+  modifierPercent: 0.1
+  element: 1
+  behaviours: 36
   aoeInfo:
     center: 0
     shape: 0
     radius: 0
     width: 0
     height: 0
-  spellStages:
-  - spellEvent: 1
-    forms: []
-  - spellEvent: 2
-    forms: []
-  - spellEvent: 3
-    forms: []
-  - spellEvent: 4
-    forms: []
-  - spellEvent: 5
-    forms: []
-  - spellEvent: 6
-    forms: []
+  abilityEvents:
+  - eventType: 0
+    forms:
+    - {fileID: 11400000, guid: d894d01ff3063ed40ab5133e1aac4b49, type: 2}
+  - eventType: 2
+    forms:
+    - {fileID: 11400000, guid: d894d01ff3063ed40ab5133e1aac4b49, type: 2}
+  - eventType: 1
+    forms:
+    - {fileID: 11400000, guid: d894d01ff3063ed40ab5133e1aac4b49, type: 2}
+  - eventType: 3
+    forms:
+    - {fileID: 11400000, guid: d894d01ff3063ed40ab5133e1aac4b49, type: 2}

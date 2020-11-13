@@ -27,7 +27,6 @@ namespace Dragon_Stones.Spell_System.Forms
 		{
 			yield return new WaitForSeconds(.1f);
 			Debug.Log("Attached a buff");
-			AddFormToTarget(casterSpell.Data.element, target, casterSpell);
 		}
 		private void AddFormToTarget(Element elem, GameObject targetObj, Cast castInst)
 		{
