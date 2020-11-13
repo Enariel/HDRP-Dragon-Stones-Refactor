@@ -40,6 +40,8 @@ namespace Dragon_Stones.Character.Movement
 		#region Unity Methods
 		private void Awake()
 		{
+            canMove = true;
+
             inputMaps = new Dragon_Stones_Input();
 
             moveMap = inputMaps.Player;
@@ -73,7 +75,7 @@ namespace Dragon_Stones.Character.Movement
         private void Update()
         {
             Run(run.ReadValue<float>());
-            MoveCharacter(movement.ReadValue<Vector2>());
+            if (canMove == true) { MoveCharacter(movement.ReadValue<Vector2>()); }            
             DoGravity();
         }
 		private void OnEnable()
@@ -95,7 +97,6 @@ namespace Dragon_Stones.Character.Movement
         {            
             //Get direction from input
             base.MoveCharacter(input);
-
             Direction.Normalize();
             //Function to move the player
             if (Direction != Vector3.zero && isRunning)

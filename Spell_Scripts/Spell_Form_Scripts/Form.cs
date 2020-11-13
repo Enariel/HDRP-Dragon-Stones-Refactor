@@ -51,7 +51,7 @@ namespace Dragon_Stones.Spell_System.Forms
     {
         public FormTarget target = FormTarget.Target;
         public bool multiTarget = false;
-        public abstract IEnumerator DoForm(Cast casterSpell, GameObject target, Vector3 targetPos);
+        public abstract IEnumerator DoForm(Cast castInst, GameObject target, Vector3 targetPos);
         public virtual IEnumerator Reset()
 		{
             yield return null;

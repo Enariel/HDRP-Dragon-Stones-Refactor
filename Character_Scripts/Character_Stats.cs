@@ -6,6 +6,10 @@ using Dragon_Stones.Events;
 using Dragon_Stones.Game_Managers.Time_System;
 using Dragon_Stones.Game_Managers;
 using Dragon_Stones.Input;
+using Dragon_Stones.Spell_System.Forms;
+using System.Collections.Generic;
+using Dragon_Stones.Spell_System;
+using System.Collections;
 
 /* ============================================
  *              Character Stats
@@ -41,6 +45,7 @@ namespace Dragon_Stones.Character.State
 
         [Header("Events")]
         private Action<TickTimeArgs> tickListener;
+        private List<Form> onhitforms = new List<Form>();
 
 
         public float StartMaxHP { get => startMaxHP; set => startMaxHP = value; }
@@ -50,14 +55,24 @@ namespace Dragon_Stones.Character.State
         public float StartDex { get => startDex; set => startDex = value; }
 		public float StartPhysDef { get => startPhysDef; set => startPhysDef = value; }
 		public float StartMagDef { get => startMagDef; set => startMagDef = value; }
+		public List<Form> Onhitforms { get => onhitforms; }
 
 		#region Unity Methods
 		private void Awake()
 		{
             tickListener = new Action<TickTimeArgs>(OnTick);
 		}
-        //Enable and disable listeners
-        private void OnEnable()
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.GetComponent<Projectile>() != null)
+			{
+                onhitforms = new List<Form>();
+                var otherProj = other.GetComponent<Projectile>();
+                onhitforms = otherProj.castInst._EventDict[SpellEvent.OnProjectileHit.ToString()];
+			}
+		}
+		//Enable and disable listeners
+		private void OnEnable()
 		{
             WorldEvents.StartListen("Tick", tickListener);
 		}
@@ -68,6 +83,10 @@ namespace Dragon_Stones.Character.State
 		}
 
 		#endregion
+        public IEnumerator DoProjectileHitForms(Cast castInst, List<Form> onHitForms, GameObject caster)
+		{
+            yield return new Process_Forms(castInst, onHitForms, caster).ProcessForm();
+		}
 
 		public virtual void RegenStats() { }
         public virtual void OnTick(TickTimeArgs tick) { }

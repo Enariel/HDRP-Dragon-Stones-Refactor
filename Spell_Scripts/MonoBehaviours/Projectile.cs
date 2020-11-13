@@ -38,33 +38,36 @@ namespace Dragon_Stones.Spell_System.Forms
 		}
 		public void OnTriggerEnter(Collider other)
 		{
-			if (other.gameObject != castInst.Caster)
+			if (other.gameObject == castInst.Caster || other.gameObject.CompareTag("Ground"))
 			{
-				if (other.gameObject.CompareTag("Ground"))
-				{
-					StartCoroutine(castInst.OnProjectileHit(null));
-				}
-				else
-				{
-					StartCoroutine(castInst.OnProjectileHit(other.gameObject));
-				}
+				Debug.Log("Collided with" + other.name);
+			}
+			else
+			{
+				Cast newCastInst = new Cast(castInst.Data, castInst.Caster);
+				newCastInst.OnProjectileHit(other.gameObject, newCastInst._EventDict[SpellEvent.OnProjectileHit.ToString()]);
 
 				ParticleSystem ps = this.gameObject.GetComponent<ParticleSystem>();
+
 				if (ps != null)
 				{
 					ps.Stop();
 				}
+				this.gameObject.SetActive(false);
 			}
 		}
 		#endregion
-
 		public IEnumerator FireProjectile(float speed)
 		{
-			while(this.transform.position != targetPos)
+			//While distance between projectile and initial target point is shorter than a certain distance
+			var distance = Vector3.Distance(transform.position, targetPos);
+			while (distance > .075f)
 			{
+				//Move projectile at speed specified by form
 				transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-				yield return null;
+				yield return new WaitForEndOfFrame();
 			}
+			yield return null;
 		}
 
 		//Creates references and sets proper variables of references

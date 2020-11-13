@@ -23,12 +23,12 @@ namespace Dragon_Stones.Spell_System.Forms
 		//Variables
 		public GameObject[] effectObjs;
 		#endregion
-		public override IEnumerator DoForm(Cast casterSpell, GameObject target, Vector3 targetPos)
+		public override IEnumerator DoForm(Cast castInst, GameObject target, Vector3 targetPos)
 		{
 			yield return new WaitForSeconds(.1f);
 			Debug.Log("Attached a buff");
 		}
-		private void AddFormToTarget(Element elem, GameObject targetObj, Cast castInst)
+		private void AddFormToTarget(Cast castInst, Element elem, GameObject targetObj)
 		{
 			switch (elem)
 			{

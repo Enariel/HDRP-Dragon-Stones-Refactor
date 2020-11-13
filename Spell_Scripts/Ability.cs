@@ -60,7 +60,6 @@ namespace Dragon_Stones.Spell_System
             new AbilityEventData(SpellEvent.OnProjectileHit, new List<Form>()),
             new AbilityEventData(SpellEvent.OnEnd, new List<Form>()),
         };
-
 		public IEnumerator Execute(Ability aSpell, GameObject caster)
         {
             {

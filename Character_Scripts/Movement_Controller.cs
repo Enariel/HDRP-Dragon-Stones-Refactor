@@ -41,6 +41,7 @@ namespace Dragon_Stones.Character.Movement
 		public bool isGrounded = true;
 		public bool isCasting = false;
 		public bool isJumping = false;
+		public bool canMove = true;
 		public const float GRAVITY = -9.81f;
 		public Vector3 gVelocity;
 		private Vector3 direction;
@@ -71,26 +72,29 @@ namespace Dragon_Stones.Character.Movement
 		#region 
 		public virtual void MoveCharacter(Vector2 input)
 		{
-			direction = new Vector3(input.x, 0f, input.y);
-
-			//Invoke movement event for Animation script.
-
-			if (direction != Vector3.zero)
+			if (canMove == true)
 			{
-				if (isRunning)
+				direction = new Vector3(input.x, 0f, input.y);
+
+				//Invoke movement event for Animation script.
+
+				if (direction != Vector3.zero)
 				{
-					OnCharacterMove?.Invoke(this, new OnCharacterMovedArgs(new Vector2(direction.x, direction.z).magnitude));
+					if (isRunning)
+					{
+						OnCharacterMove?.Invoke(this, new OnCharacterMovedArgs(new Vector2(direction.x, direction.z).magnitude));
+					}
+					else
+					{
+						float jogSpecs = new Vector2(direction.x * .5f, direction.z * .5f).magnitude;
+						OnCharacterMove?.Invoke(this, new OnCharacterMovedArgs(jogSpecs));
+					}
 				}
 				else
 				{
-					float jogSpecs = new Vector2(direction.x * .5f, direction.z * .5f).magnitude;
-					OnCharacterMove?.Invoke(this, new OnCharacterMovedArgs(jogSpecs));
+					OnCharacterMove?.Invoke(this, new OnCharacterMovedArgs(0));
+					OnCharacterIdle?.Invoke(this, null);
 				}
-			}
-			else
-			{
-				OnCharacterMove?.Invoke(this, new OnCharacterMovedArgs(0));
-				OnCharacterIdle?.Invoke(this, null);
 			}
 		}
 		public virtual void Jump()

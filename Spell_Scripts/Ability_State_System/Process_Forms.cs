@@ -25,11 +25,29 @@ namespace Dragon_Stones.Spell_System
 		public IEnumerator ProcessForm()
 		{
 			//Get caster information
-			GameObject[] targetsInRange = caster.GetComponent<Target_System>().targets.ToArray();
-			GameObject mainTarget = targetsInRange[0];
-			
-			Vector3 mainTargPos = mainTarget.transform.position;
-			Vector3 casterTargPos = caster.transform.position;
+			var casterTargets = caster.GetComponent<Target_System>();
+			GameObject[] targetsInRange;
+			GameObject mainTarget;
+
+			Vector3 mainTargPos;
+			Vector3 casterTargPos;
+
+			casterTargPos = caster.transform.position;
+
+			if (casterTargets == null || casterTargets.targets.Count > 0)
+			{
+				targetsInRange = caster.GetComponent<Target_System>().targets.ToArray();
+				mainTarget = targetsInRange[0];
+				mainTargPos = mainTarget.transform.position;
+			}
+			else
+			{
+				targetsInRange = null;
+				mainTarget = null;
+				mainTargPos = new Vector3(casterTargPos.x, casterTargPos.y, casterTargPos.z) + Vector3.forward;
+			}
+
+			casterTargPos = caster.transform.position;
 
 			foreach (Form form in forms)
 			{

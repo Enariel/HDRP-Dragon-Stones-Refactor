@@ -19,26 +19,35 @@ namespace Dragon_Stones.Spell_System.Forms
 	public class Linear_Projectile_Form : Form
 	{
 		#region Variables
-		[SerializeField] private GameObject projectile;
-		[SerializeField] private Vector3 offset = new Vector3(1f, 1f, 1f);
-		[SerializeField] private float speed = 1f;
+		//References
+		Vector3 _casterPos;
+		Vector3 _targetPos;
+		//Variables
+		[SerializeField] private GameObject projectile; //Projectile to fire
+		[SerializeField] private Vector3 offset = new Vector3(1f, 1f, 1f); //Its offset. 
+		[SerializeField] private float speed = 20f; //How fast it will move
 		#endregion
-		public override IEnumerator DoForm(Cast casterSpell, GameObject target, Vector3 targetPos)
+		public override IEnumerator DoForm(Cast castInst, GameObject target, Vector3 targetPos)
 		{
-			GameObject caster = casterSpell.Caster;
-			Vector3 casterPos = caster.transform.position;
+			//Get spell caster
+			GameObject caster = castInst.Caster;
+			_casterPos = caster.transform.position;
+			var _casterRot = caster.transform.rotation;
+			_targetPos = targetPos;
 
-			var ProjInst = Instantiate(projectile, casterPos + offset, caster.transform.rotation);
-			var linearInst = ProjInst.AddComponent<Projectile>();
+			//Instantiate a prefab by caster's projectile point.
+			var ProjInst = Instantiate(projectile, caster.transform.position + offset, new Quaternion(_casterRot.x, _casterRot.y, _casterRot.z, _casterRot.w
+				));
+			Projectile linearInst = ProjInst.AddComponent<Projectile>();
 
-			linearInst.castInst = casterSpell;
+			//Add data to the monobehaviour.
+			linearInst.castInst = castInst;
 			linearInst.targetPos = targetPos;
-			yield return linearInst.FireProjectile(speed);
-			
-			yield return new WaitForEndOfFrame();
 
-			yield return null;
-			Debug.Log("Returned null in Projectile Form");
+			//Wait for end of frame 
+			yield return new WaitForEndOfFrame();
+			//Start the enumeration
+			yield return linearInst.FireProjectile(speed);
 		}
 	}
 }

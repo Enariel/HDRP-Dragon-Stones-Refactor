@@ -8,7 +8,8 @@ using Dragon_Stones.Character.Movement;
 /* ============================================
 *			Animation Controller
 * --------------------------------------------
-*           - Summary of script - 
+*		Controls the animation and events on
+*	on the animator component.
 *  ===========================================
 */
 namespace Dragon_Stones.Character
@@ -19,6 +20,8 @@ namespace Dragon_Stones.Character
 		//References
 		private Animator charAnimator;
 		private Movement_Controller mc;
+		//Variables
+		public float loopTime;
 		#endregion
 
 		#region Unity Methods
@@ -29,7 +32,10 @@ namespace Dragon_Stones.Character
 			mc.OnCharacterMove += CharacterMoved;
 			mc.OnCharacterIdle += CharacterIdled;
 		}
-
+		public void Update()
+		{
+			charAnimator.SetBool("CanMove", mc.canMove);
+		}
 		private void CharacterIdled(object sender, EventArgs e)
 		{
 			charAnimator.SetBool("IsIdle", true);
@@ -47,8 +53,7 @@ namespace Dragon_Stones.Character
 		}
 		#endregion
 
-		#region Events
-
+		#region Animation Events
 		#endregion
 	}
 }
