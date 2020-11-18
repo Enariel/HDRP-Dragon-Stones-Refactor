@@ -21,7 +21,7 @@ namespace Dragon_Stones
 		#endregion
 		public override IEnumerator DoForm(Cast casterSpell, GameObject target, Vector3 targetPos)
 		{
-			yield return new WaitForEndOfFrame();
+			yield break;
 			Debug.Log("Sound played");
 		}
 	}

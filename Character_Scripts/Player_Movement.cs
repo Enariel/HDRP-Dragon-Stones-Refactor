@@ -5,6 +5,7 @@ using UnityEngine;
 using Dragon_Stones.Character.State;
 using Dragon_Stones.Input;
 using UnityEngine.InputSystem;
+using Dragon_Stones.Inventory_Systems;
 
 /* ============================================
  *              Player Movement
@@ -19,10 +20,11 @@ namespace Dragon_Stones.Character.Movement
 {
     public class Player_Movement : Movement_Controller
     {
-		#region
+		#region Variables
 		//References
 		public Camera playerCam;
         //Variables
+        [SerializeField] private float interactRange = 1.5f;
         [SerializeField] private float turnSmoothVelocity = 0.1f, turnSmoothTime = 0.1f;
         #endregion
 
@@ -35,10 +37,11 @@ namespace Dragon_Stones.Character.Movement
         private InputAction movement;
         private InputAction run;
         private InputAction jump;
+        private InputAction interact;
 		#endregion
 
 		#region Unity Methods
-		private void Awake()
+		void Awake()
 		{
             canMove = true;
 
@@ -48,21 +51,12 @@ namespace Dragon_Stones.Character.Movement
             movement = inputMaps.Player.Movement;
             run = inputMaps.Player.Run;
             jump = inputMaps.Player.Jump;
+            interact = inputMaps.Player.Interact;
+
+			interact.performed += ctx => InteractWithObject();
 		}
 
-		private void Run(float ctx)
-		{
-            if (ctx >= .1f)
-			{
-                isRunning = true;
-            }
-			else
-			{
-                isRunning = false;
-			}
-		}
-
-		private void Start()
+		void Start()
         {
             playerCam = Camera.main;
             gameManager = GameObject.FindGameObjectWithTag("GameController");
@@ -72,27 +66,34 @@ namespace Dragon_Stones.Character.Movement
             groundCheck = this.transform;
             groundCheck.position = transform.position - new Vector3(0f, -1f, 0);
         }
-        private void Update()
-        {
-            Run(run.ReadValue<float>());
-            if (canMove == true) { MoveCharacter(movement.ReadValue<Vector2>()); }            
-            DoGravity();
-        }
-		private void OnEnable()
+		void OnEnable()
 		{
+            interact.Enable();
             movement.Enable();
             run.Enable();
             jump.Enable();
         }
-		private void OnDisable()
+		void OnDisable()
 		{
+            interact.Disable();
             movement.Disable();
             run.Disable();
             jump.Disable();
         }
+        void Update()
+        {
+            Run(run.ReadValue<float>());
+            if (canMove == true) { MoveCharacter(movement.ReadValue<Vector2>()); }
+            DoGravity();
+        }
+        void OnDrawGizmos()
+		{
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(this.gameObject.transform.position, interactRange);
+		}
 		#endregion
 
-        //Player movement methods
+		//Player movement methods
 		public override void MoveCharacter(Vector2 input)
         {            
             //Get direction from input
@@ -127,9 +128,26 @@ namespace Dragon_Stones.Character.Movement
                 base.Jump();
             }
         }
-        private bool IsRunning()
-		{
-            return isRunning = true;
-		}
+        private void Run(float ctx)
+        {
+            if (ctx >= .1f)
+            {
+                isRunning = true;
+            }
+            else
+            {
+                isRunning = false;
+            }
+        }
+        private void InteractWithObject()
+        {
+            //TODO: Rotate player towards object
+            Collider[] colliders = new Collider[0];
+            colliders = Physics.OverlapSphere(this.gameObject.transform.position, interactRange, LayerMask.GetMask("Player"));
+
+            var interactTarget = colliders[0].GetComponent<IInteractable>();
+
+            interactTarget?.Interact();
+        }
     }
 }

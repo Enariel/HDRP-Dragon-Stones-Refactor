@@ -54,10 +54,9 @@ namespace Dragon_Stones.Spell_System
 			foreach (AbilityEventData eventData in data.abilityEvents)
 			{
 				EventDict.Add(eventData.EventType.ToString(), eventData.Forms);
-				animTypeID.Add(eventData.EventType.ToString(), eventData.TargetAnimationTypeID);
-				animID.Add(eventData.EventType.ToString(), eventData.TargetAnimation);
 			}
 		}
+
 		//Ability IEnumerations
 		//Entry for the spell or ability
 		public IEnumerator OnCastExecute()
@@ -77,30 +76,34 @@ namespace Dragon_Stones.Spell_System
 
 			//TODO add interruption for spellcasting.
 
-			//Find its behaviours and do them
-			foreach (Behaviour flag in bFlags)
+			//Find its behaviours and do them before doing casting behaviours
+			if (spellFlags.HasFlag(Behaviour.AreaOfEffect))
 			{
-				switch (flag)
-				{
-					case Behaviour.AreaOfEffect:
-						//Grab aoe information and create a new AoE behaviour class from it
-						break;
-					case Behaviour.BuffOrDebuff:
-						//Create new buff behaviour class
-						break;
-					case Behaviour.CastTime:
-						//Do 'OnSuccess' after a certain time has passed
-						yield return OnCastTime();
-						break;
-					case Behaviour.Channeled:
-						//Do 'OnSuccess' for ticks specified by duration
-						yield return OnChannel();
-						break;
-					case Behaviour.StopMove:
-						//The spell doesnt stop spell movement
-						move.canMove = true;
-						break;
-				}
+				yield return null;
+			}
+			if (spellFlags.HasFlag(Behaviour.BuffOrDebuff))
+			{
+				yield return null;
+			}
+			if (spellFlags.HasFlag(Behaviour.CastTime))
+			{
+				yield return OnCastTime();
+			}
+			if (spellFlags.HasFlag(Behaviour.Channeled))
+			{
+				yield return OnChannel();
+			}
+			if (spellFlags.HasFlag(Behaviour.Directional))
+			{
+				yield return null;
+			}
+			if (spellFlags.HasFlag(Behaviour.StopMove))
+			{
+				yield return null;
+			}
+			if (spellFlags.HasFlag(Behaviour.TurnTowardsEnemy))
+			{
+				yield return null;
 			}
 
 			yield return OnEnd();
@@ -108,8 +111,6 @@ namespace Dragon_Stones.Spell_System
 		public IEnumerator OnStart()
 		{
 			anim.SetBool("IsCasting", true);
-			anim.SetInteger("AnimTypeID", animTypeID[ON_START]);
-			anim.SetInteger("AnimID", animID[ON_START]);
 
 			if (EventDict[ON_START] != null)
 			{
@@ -119,8 +120,11 @@ namespace Dragon_Stones.Spell_System
 		public IEnumerator OnCastTime()
 		{
 			anim.SetBool("IsCharging", true);
+
 			yield return new WaitForSeconds(data.castTime);
+
 			anim.SetBool("IsCharging", false);
+
 			yield return new Process_Forms(this, EventDict[ON_SUCCESS], caster).ProcessForm();
 		}
 		public IEnumerator OnChannel()
@@ -136,31 +140,33 @@ namespace Dragon_Stones.Spell_System
 		}
 		public IEnumerator OnSuccess()
 		{
-			anim.SetInteger("AnimTypeID", animTypeID[ON_SUCCESS]);
-			anim.SetInteger("AnimID", animID[ON_SUCCESS]);
-			//Invert the time and multiply it by length so an appropriate duration is reached.
-			var clipInfo = anim.GetCurrentAnimatorClipInfo(0);
-			var clipTime = clipInfo[0].clip.length;
-			//If duration is 0, make sure the clip can still play
-			if (data.duration < .01f)
+			if (EventDict[ON_SUCCESS] != null)
 			{
-				anim.SetFloat("Duration", 1f);
+				//Invert the time and multiply it by length so an appropriate duration is reached.
+				var clipInfo = anim.GetCurrentAnimatorClipInfo(0);
+				var clipTime = clipInfo[0].clip.length;
+
+				Debug.Log(clipTime + " " + data.duration);
+				//If duration is 0, make sure the clip can still play
+				if (data.duration > 0f)
+				{
+					anim.SetFloat("SpellDuration", (1 / data.duration) * clipTime);
+				}
+				else
+				{
+					anim.SetFloat("SpellDuration", 1f);
+				}
+
+				yield return new Process_Forms(this, EventDict[ON_SUCCESS], caster).ProcessForm();
 			}
 			else
 			{
-				anim.SetFloat("Duration", (1 / data.duration) * clipTime);
-			}
-
-			if (EventDict[ON_SUCCESS] != null)
-			{
-				yield return new Process_Forms(this, EventDict[ON_SUCCESS], caster).ProcessForm();
+				yield return null;
 			}
 		}
 		public IEnumerator OnEnd()
 		{
 			anim.SetBool("IsCasting", false);
-			anim.SetInteger("AnimTypeID", animTypeID[ON_END]);
-			anim.SetInteger("AnimID", animID[ON_END]);
 
 			if (EventDict[ON_END] != null)
 			{
@@ -172,13 +178,17 @@ namespace Dragon_Stones.Spell_System
 				move.canMove = true;
 			}
 		}
-		public void OnProjectileHit(GameObject target, List<Form> onHitForms)
+		public void OnProjectileHit(Cast castInst, GameObject target, List<Form> onHitForms)
 		{
 			var targetHit = target.GetComponent<Character_Stats>();
 
-			if (onHitForms != null)
+			if (onHitForms == null)
 			{
-				targetHit.StartCoroutine(targetHit.DoProjectileHitForms(this, onHitForms, this.caster));
+				Debug.Log("No on hit forms");				
+			}
+			else
+			{
+				targetHit.StartCoroutine(targetHit.DoProjectileHitForms(castInst, onHitForms, castInst.caster));
 			}
 		}
 	}

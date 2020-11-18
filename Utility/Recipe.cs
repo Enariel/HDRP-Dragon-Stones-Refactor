@@ -11,18 +11,17 @@
 
 namespace Dragon_Stones.Inventory_Systems
 {
+	[CreateAssetMenu(menuName = "Item/Recipe", fileName = "New Recipe")]
+	class Recipe : ScriptableObject
+	{
+		[Header("Recipe Details")]
+		[SerializeField] private Consumable ingredient;
+		[SerializeField] private int ingredientAmount;
 
-    [CreateAssetMenu(menuName = "Item/Recipe", fileName = "New Recipe")]
-    class Recipe : ScriptableObject
-    {
-        [Header("Recipe Details")]
-        [SerializeField] private Consumable ingredient;
-        [SerializeField] private int ingredientAmount;
-
-        public void CreateItem(Item aItem)
-        {
-            Debug.Log("You made a" + aItem.Title + "!");
-        }
-    }
+		public void CreateItem(Item aItem)
+		{
+			Debug.Log("You made a" + aItem.Title + "!");
+		}
+	}
 }
 

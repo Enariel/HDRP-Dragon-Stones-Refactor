@@ -15,5 +15,6 @@ MonoBehaviour:
   target: 2
   multiTarget: 0
   projectile: {fileID: 5188358523361080524, guid: d1cbbe59ad60b094c93159501a8927da, type: 3}
-  offset: {x: 1, y: 1, z: 1}
-  speed: 20
+  offset: {x: 0, y: 1, z: 0.5}
+  speed: 5
+  delay: 0.66

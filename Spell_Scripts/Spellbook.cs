@@ -65,7 +65,8 @@ namespace Dragon_Stones.Spell_System
 		private void Awake()
 		{
 			//Empty dictionary and refill it
-			m_SpellMap.Clear();
+			m_SpellMap = new Dictionary<string, Ability>();
+
 			foreach (Ability spell in abilities)
 			{
 				m_SpellMap.Add(spell.id, spell);

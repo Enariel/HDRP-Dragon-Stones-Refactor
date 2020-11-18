@@ -54,7 +54,7 @@ namespace Dragon_Stones.Spell_System.Forms
         public abstract IEnumerator DoForm(Cast castInst, GameObject target, Vector3 targetPos);
         public virtual IEnumerator Reset()
 		{
-            yield return null;
+            yield break;
 		}
     }
 }

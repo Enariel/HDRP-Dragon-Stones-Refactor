@@ -66,7 +66,7 @@ namespace Dragon_Stones.Input
                     ""id"": ""ca43aae2-4d7a-467b-baaa-08fcec815342"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold""
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -628,6 +628,14 @@ namespace Dragon_Stones.Input
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Bag"",
+                    ""type"": ""Button"",
+                    ""id"": ""dad5f8cb-f0d1-48ef-99d4-206686f90c7b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -674,6 +682,28 @@ namespace Dragon_Stones.Input
                     ""action"": ""GameMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1a53372-ae2d-4fbf-9799-284f5490bcf5"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e387f14a-1c9a-4013-b5f9-fef88fe6c05b"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -707,6 +737,7 @@ namespace Dragon_Stones.Input
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ExitMenu = m_UI.FindAction("ExitMenu", throwIfNotFound: true);
             m_UI_GameMenu = m_UI.FindAction("GameMenu", throwIfNotFound: true);
+            m_UI_Bag = m_UI.FindAction("Bag", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -912,12 +943,14 @@ namespace Dragon_Stones.Input
         private IUIActions m_UIActionsCallbackInterface;
         private readonly InputAction m_UI_ExitMenu;
         private readonly InputAction m_UI_GameMenu;
+        private readonly InputAction m_UI_Bag;
         public struct UIActions
         {
             private @Dragon_Stones_Input m_Wrapper;
             public UIActions(@Dragon_Stones_Input wrapper) { m_Wrapper = wrapper; }
             public InputAction @ExitMenu => m_Wrapper.m_UI_ExitMenu;
             public InputAction @GameMenu => m_Wrapper.m_UI_GameMenu;
+            public InputAction @Bag => m_Wrapper.m_UI_Bag;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -933,6 +966,9 @@ namespace Dragon_Stones.Input
                     @GameMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnGameMenu;
                     @GameMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnGameMenu;
                     @GameMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnGameMenu;
+                    @Bag.started -= m_Wrapper.m_UIActionsCallbackInterface.OnBag;
+                    @Bag.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnBag;
+                    @Bag.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnBag;
                 }
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
@@ -943,6 +979,9 @@ namespace Dragon_Stones.Input
                     @GameMenu.started += instance.OnGameMenu;
                     @GameMenu.performed += instance.OnGameMenu;
                     @GameMenu.canceled += instance.OnGameMenu;
+                    @Bag.started += instance.OnBag;
+                    @Bag.performed += instance.OnBag;
+                    @Bag.canceled += instance.OnBag;
                 }
             }
         }
@@ -979,6 +1018,7 @@ namespace Dragon_Stones.Input
         {
             void OnExitMenu(InputAction.CallbackContext context);
             void OnGameMenu(InputAction.CallbackContext context);
+            void OnBag(InputAction.CallbackContext context);
         }
     }
 }

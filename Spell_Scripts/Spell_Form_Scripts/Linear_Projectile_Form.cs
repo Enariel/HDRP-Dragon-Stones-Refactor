@@ -23,31 +23,34 @@ namespace Dragon_Stones.Spell_System.Forms
 		Vector3 _casterPos;
 		Vector3 _targetPos;
 		//Variables
-		[SerializeField] private GameObject projectile; //Projectile to fire
+		[SerializeField] protected GameObject projectile; //Projectile to instantiate
+		private GameObject projectileClone;
 		[SerializeField] private Vector3 offset = new Vector3(1f, 1f, 1f); //Its offset. 
 		[SerializeField] private float speed = 20f; //How fast it will move
+		[SerializeField] private float delay = 1f; //Delay for animations
 		#endregion
 		public override IEnumerator DoForm(Cast castInst, GameObject target, Vector3 targetPos)
 		{
+			yield return FireProjectileWithDelay(castInst, target, targetPos);
+			yield break;
+		}
+		private IEnumerator FireProjectileWithDelay(Cast castInst, GameObject target, Vector3 targetPos)
+		{
+			
+			yield return new WaitForSeconds(delay);
 			//Get spell caster
 			GameObject caster = castInst.Caster;
-			_casterPos = caster.transform.position;
-			var _casterRot = caster.transform.rotation;
-			_targetPos = targetPos;
+			Vector3 spawnPoint = caster.transform.TransformPoint(offset);
 
 			//Instantiate a prefab by caster's projectile point.
-			var ProjInst = Instantiate(projectile, caster.transform.position + offset, new Quaternion(_casterRot.x, _casterRot.y, _casterRot.z, _casterRot.w
-				));
-			Projectile linearInst = ProjInst.AddComponent<Projectile>();
+			projectileClone = Instantiate(projectile, spawnPoint, caster.transform.rotation);
+			Projectile linearInst = projectileClone.AddComponent<Projectile>();
 
 			//Add data to the monobehaviour.
 			linearInst.castInst = castInst;
 			linearInst.targetPos = targetPos;
-
-			//Wait for end of frame 
-			yield return new WaitForEndOfFrame();
-			//Start the enumeration
-			yield return linearInst.FireProjectile(speed);
+			linearInst.speed = speed;
+			linearInst.hitForms = castInst._EventDict[SpellEvent.OnProjectileHit.ToString()];
 		}
 	}
 }

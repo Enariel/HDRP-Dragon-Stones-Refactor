@@ -267,6 +267,7 @@ namespace Dragon_Stones.Game_Managers.Time_System
             if (sun != null)
             {
                 sun.color = sunPresets.directionalFilterColour.Evaluate(timePercent);
+                RenderSettings.ambientSkyColor = sunPresets.ambientColour.Evaluate(timePercent);
             }
             else if (moon != null)
             {

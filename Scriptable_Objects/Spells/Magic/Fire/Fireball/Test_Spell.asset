@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f74570877182246a86b1e08eaf92d4, type: 3}
   m_Name: Test_Spell
   m_EditorClassIdentifier: 
-  title: Test_Spell
+  title: Fireball
   id: Test_Spell
-  desc: A test spell
+  desc: A test fireball spell
   icon: {fileID: 0}
-  castTime: 2
-  duration: 3
+  castTime: 3
+  duration: 1
   coolDown: 1
   maxRange: 10
   modifierPercent: 0.1
-  element: 1
+  rank: 15
+  element: 8
   behaviours: 2
   aoeInfo:
     center: 0
@@ -30,23 +31,17 @@ MonoBehaviour:
     width: 0
     height: 0
   abilityEvents:
-  - targetAnimationTypeID: 1
-    targetAnimationID: 11
-    eventType: 0
+  - eventType: 0
     forms:
-    - {fileID: 11400000, guid: d894d01ff3063ed40ab5133e1aac4b49, type: 2}
-  - targetAnimationTypeID: 1
-    targetAnimationID: 101
-    eventType: 2
+    - {fileID: 11400000, guid: bf28376cc183bda4d9b2dd084da13acb, type: 2}
+  - eventType: 2
     forms:
+    - {fileID: 11400000, guid: e7506266f4a2deb4a8c95bb3a90589d6, type: 2}
     - {fileID: 11400000, guid: 4ec2a1f498729c14b8154d5c3ad25028, type: 2}
-  - targetAnimationTypeID: 0
-    targetAnimationID: 0
-    eventType: 1
+  - eventType: 1
+    forms:
+    - {fileID: 11400000, guid: a2d7312c99624d641a0a72675b2f1e96, type: 2}
+  - eventType: 3
     forms:
     - {fileID: 11400000, guid: d894d01ff3063ed40ab5133e1aac4b49, type: 2}
-  - targetAnimationTypeID: 0
-    targetAnimationID: 0
-    eventType: 3
-    forms:
-    - {fileID: 11400000, guid: d894d01ff3063ed40ab5133e1aac4b49, type: 2}
+    - {fileID: 11400000, guid: a2d7312c99624d641a0a72675b2f1e96, type: 2}

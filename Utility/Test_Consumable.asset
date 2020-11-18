@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09eeecc650eb5054f93b7cff30071583, type: 3}
+  m_Name: Test_Consumable
+  m_EditorClassIdentifier: 
+  title: Test_Consumable
+  desc: This is a test consumable
+  id: Test_Consumable
+  shopBaseCost: 10
+  shopSellCost: 3
+  canSell: 1
+  itemPreFab: {fileID: 0}
+  icon: {fileID: 8560052514924204353, guid: 41fa69c50e3945e459684caee17a4035, type: 3}
+  conType: 1
+  mod: 0.2
+  canStack: 1
+  maxStack: 99
+  recipe: []

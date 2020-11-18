@@ -25,7 +25,12 @@ namespace Dragon_Stones.Spell_System.Forms
 		public Cast castInst;
 		public Rigidbody rb;
 		public SphereCollider col;
+		public float speed;
 		public Vector3 targetPos;
+		public List<Form> hitForms = new List<Form>();
+		private GameObject caster;
+		private Vector3 casterPos;
+		private float maxDist;
 		#endregion
 
 		//Set velocity and it should be destoryed on impact
@@ -34,19 +39,15 @@ namespace Dragon_Stones.Spell_System.Forms
 		private void Start()
 		{
 			Debug.Log("Projectile created.");
+			StartCoroutine(FireProjectile(speed));
 			SetBodies();
 		}
-		public void OnTriggerEnter(Collider other)
+		public void Update()
 		{
-			if (other.gameObject == castInst.Caster || other.gameObject.CompareTag("Ground"))
+			Vector3 thisPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+			float distanceFromCast = Vector3.Distance(thisPos, casterPos);
+			if (distanceFromCast >= maxDist)
 			{
-				Debug.Log("Collided with" + other.name);
-			}
-			else
-			{
-				Cast newCastInst = new Cast(castInst.Data, castInst.Caster);
-				newCastInst.OnProjectileHit(other.gameObject, newCastInst._EventDict[SpellEvent.OnProjectileHit.ToString()]);
-
 				ParticleSystem ps = this.gameObject.GetComponent<ParticleSystem>();
 
 				if (ps != null)
@@ -54,6 +55,27 @@ namespace Dragon_Stones.Spell_System.Forms
 					ps.Stop();
 				}
 				this.gameObject.SetActive(false);
+			}
+		}
+		public void OnTriggerEnter(Collider other)
+		{
+			ParticleSystem ps = this.gameObject.GetComponent<ParticleSystem>();
+
+			if (caster.CompareTag("Player") && other.CompareTag("Enemy"))
+			{
+				castInst.OnProjectileHit(castInst, other.gameObject, hitForms);
+				if (ps != null)
+				{
+					ps.Stop();
+				}
+			}
+			else if (caster.CompareTag("Enemy") && other.CompareTag("Player"))
+			{
+				castInst.OnProjectileHit(castInst, other.gameObject, hitForms);
+				if (ps != null)
+				{
+					ps.Stop();
+				}
 			}
 		}
 		#endregion
@@ -67,7 +89,7 @@ namespace Dragon_Stones.Spell_System.Forms
 				transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
 				yield return new WaitForEndOfFrame();
 			}
-			yield return null;
+			yield break;
 		}
 
 		//Creates references and sets proper variables of references
@@ -81,6 +103,9 @@ namespace Dragon_Stones.Spell_System.Forms
 			rb.constraints = RigidbodyConstraints.FreezeAll;
 
 			col.isTrigger = true;
+			caster = castInst.Caster;
+			casterPos = caster.transform.position;
+			maxDist = castInst.Data.maxRange;
 		}
 
 		//Gizmos

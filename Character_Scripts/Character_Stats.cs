@@ -62,15 +62,6 @@ namespace Dragon_Stones.Character.State
 		{
             tickListener = new Action<TickTimeArgs>(OnTick);
 		}
-		private void OnTriggerEnter(Collider other)
-		{
-			if (other.GetComponent<Projectile>() != null)
-			{
-                onhitforms = new List<Form>();
-                var otherProj = other.GetComponent<Projectile>();
-                onhitforms = otherProj.castInst._EventDict[SpellEvent.OnProjectileHit.ToString()];
-			}
-		}
 		//Enable and disable listeners
 		private void OnEnable()
 		{

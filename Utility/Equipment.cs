@@ -37,11 +37,11 @@ namespace Dragon_Stones.Inventory_Systems
         public override void UseItem(Item aItem)
         {
             //Use here will equip an item to a slot
-            Debug.Log(this.Title + "has been used");
+            Debug.Log(this.Title + " has been used");
         }
-        public override void UseManyItems(Item aItem, int aAmount)
-        {
-            throw new NotImplementedException();
-        }
+        public void Equip(Equipment equipment)
+		{
+            Debug.Log("Equipping: " + equipment.Title);
+		}
     }
 }

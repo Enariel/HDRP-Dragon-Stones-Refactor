@@ -15,18 +15,18 @@ MonoBehaviour:
   ambientColour:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
+    key1: {r: 1, g: 0.98614424, b: 0.82360995, a: 1}
+    key2: {r: 1, g: 0.103087686, b: 0, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
+    ctime1: 193
+    ctime2: 34502
+    ctime3: 65535
+    ctime4: 65535
     ctime5: 0
     ctime6: 0
     ctime7: 0
@@ -39,25 +39,25 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   directionalFilterColour:
     serializedVersion: 2
-    key0: {r: 1, g: 0.68787146, b: 0.4292453, a: 1}
-    key1: {r: 0.9450981, g: 0.9333334, b: 0.8431373, a: 1}
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.68787146, b: 0.4292453, a: 1}
     key2: {r: 1, g: 0.9944407, b: 0.9481132, a: 0}
-    key3: {r: 1, g: 0.98823535, b: 0.89019614, a: 0}
-    key4: {r: 1, g: 0.6862745, b: 0.427451, a: 0}
-    key5: {r: 0.72156864, g: 0.8235295, b: 0.86274517, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 1, g: 0.6862745, b: 0.427451, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 1, g: 0.6862745, b: 0.427451, a: 0}
+    key6: {r: 1, g: 0.6862745, b: 0.427451, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 21823
+    ctime0: 16384
+    ctime1: 18022
     ctime2: 32768
-    ctime3: 43646
-    ctime4: 65535
-    ctime5: 65535
-    ctime6: 0
+    ctime3: 47513
+    ctime4: 49151
+    ctime5: 55705
+    ctime6: 55705
     ctime7: 0
     atime0: 0
     atime1: 65535
@@ -99,3 +99,32 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  intensity:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 0}
+    key1: {r: 1, g: 1, b: 1, a: 0.5019608}
+    key2: {r: 1, g: 1, b: 1, a: 1}
+    key3: {r: 1, g: 1, b: 1, a: 0.5019608}
+    key4: {r: 0.72156864, g: 0.8235295, b: 0.86274517, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 65535
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 16384
+    atime2: 32768
+    atime3: 49151
+    atime4: 65535
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 5

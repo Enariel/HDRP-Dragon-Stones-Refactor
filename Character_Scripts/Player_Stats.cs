@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//copyright (c) FuchsFarbe
+
+using UnityEngine;
 
 /* ============================================
  *              Player Stats
@@ -10,22 +12,10 @@
  *  this to change behaviours.
  *  ===========================================
  */
+
 namespace Dragon_Stones.Character.State
 {
-    public enum PlayerGender
-    {
-        Nonbinary,
-        Male,
-        Female
-    }
-
-    public enum PlayerRace
-    {
-        Human,
-        Elf,
-        Fomor
-    }
-    public class Player_Stats : Character_Stats
+	public class Player_Stats : Character_Stats
     {
         //Variables
         [Header("Lives")]
@@ -45,6 +35,5 @@ namespace Dragon_Stones.Character.State
         {
 
         }
-
     }
 }

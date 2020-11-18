@@ -23,7 +23,7 @@ namespace Dragon_Stones.Spell_System.Forms
 		#endregion
 		public override IEnumerator DoForm(Cast casterSpell, GameObject target, Vector3 targetPos)
 		{
-			yield return new WaitForSeconds(.1f);
+			yield break;
 			Debug.Log("Attached a buff");
 		}
 

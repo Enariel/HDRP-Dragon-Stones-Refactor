@@ -7,7 +7,7 @@ objects.
  ==============================================
 */
 
-namespace Dragon_Stones.Events
+namespace Dragon_Stones.Inventory_Systems
 {
     public interface IInteractable
     {

@@ -46,7 +46,7 @@ namespace Dragon_Stones.Spell_System
         public float coolDown; //In seconds
         public int maxRange;//In unity units
         public float modifierPercent; //This is a modifier most spells will take in, this should be changed per rank.
-        [Range(15, 1)] private int rank = 15; //Every spell rank should start at 15.
+        [Range(15, 1)] public int rank = 15; //Every spell rank should start at 15.
         [Header("Form Information")]
         public Element element = Element.Physical; //This dictates its damage type
         public Behaviour behaviours = Behaviour.Default; //This is the spells behaviours

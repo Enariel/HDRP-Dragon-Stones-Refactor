@@ -51,13 +51,13 @@ namespace Dragon_Stones.Spell_System
 
 			foreach (Form form in forms)
 			{
-				var targetStyle = form.target;
-				var multiTarget = form.multiTarget;
+				var targetStyle = form?.target;
+				var multiTarget = form?.multiTarget;
 
 				if (form != null)
 				{
 					//If a target doesnt exist, the target style is forward. 
-					if (targetsInRange.Length < 1)
+					if (targetsInRange == null)
 					{
 						targetStyle = FormTarget.Direction;
 					}
@@ -83,7 +83,13 @@ namespace Dragon_Stones.Spell_System
 							break;
 						case FormTarget.Direction:
 							//TODO
-							yield return form.DoForm(castInst, caster, caster.transform.position + Vector3.forward);
+							Vector3 casterPos = caster.transform.position;
+							Vector3 casterDir = caster.transform.forward;
+							Vector3 offset = new Vector3(0f, 1f, 0f);
+
+							Vector3 targetPos = casterPos + offset + (casterDir * castInst.Data.maxRange);
+
+							yield return form.DoForm(castInst, caster, targetPos);
 							break;
 						case FormTarget.Point:
 							//TODO: get point from raycast if player, else get player position from enemy caster position
@@ -96,7 +102,7 @@ namespace Dragon_Stones.Spell_System
 					Debug.Log("No forms");
 				}
 			}
-			yield return null;
+			yield break;
 		}
 		public IEnumerator ProcessEndForm()
 		{
@@ -104,7 +110,7 @@ namespace Dragon_Stones.Spell_System
 			{
 				form.Reset();
 			}
-			yield return null;
+			yield break;
 		}
 	}
 }
