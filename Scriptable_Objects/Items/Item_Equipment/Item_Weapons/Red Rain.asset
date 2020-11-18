@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b175bb7ead178d148951b3482c7df644, type: 3}
   m_Name: Red Rain
   m_EditorClassIdentifier: 
-  title: 
-  desc: 
-  id: 
-  shopBaseCost: 0
-  shopSellCost: 0
+  title: Red Rain
+  desc: This sword is super sharp, meant for slicing foes.
+  id: Weapon_Sword_1H_RedRain
+  shopBaseCost: 500
+  shopSellCost: 50
   canSell: 1
   itemPreFab: {fileID: 0}
   icon: {fileID: 0}
   slot: 6
-  statsToMod: 0
+  statsToMod:
+  - stat: 4
+    bonus: 10
   weaponType: 3
+  canDualWield: 0

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Dragon_Stones.Inventory_Systems
 {
 	[CreateAssetMenu(menuName = "Item/Equipment", fileName = "New Equipment")]
-    class Equipment : Item
+    public class Equipment : Item
     {
         [Header("Equipment Details")]
         [SerializeField] EquipSlot slot;
@@ -22,13 +22,8 @@ namespace Dragon_Stones.Inventory_Systems
 		public override void UseItem(Item aItem)
         {
             //Use here will equip an item to a slot
-            Debug.Log(this.Title + " has been used");
-            //Make sure item is passed as equipment so it can be equipped
-            Equip(aItem as Equipment);
+            Equipment_Manager.instance.EquipItem(aItem as Equipment);
+            RemoveFromInventory();
         }
-        public void Equip(Equipment equipment)
-		{
-            Debug.Log("Equipping: " + equipment.Title);
-		}
     }
 }

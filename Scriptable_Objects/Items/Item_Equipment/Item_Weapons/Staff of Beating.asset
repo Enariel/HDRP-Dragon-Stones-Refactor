@@ -12,14 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b175bb7ead178d148951b3482c7df644, type: 3}
   m_Name: Staff of Beating
   m_EditorClassIdentifier: 
-  title: 
-  desc: 
-  id: 
-  shopBaseCost: 0
-  shopSellCost: 0
+  title: Staff of Beating
+  desc: A staff that gives bonus to strength and can be used as a club.
+  id: Weapon_Staff_ofBeating
+  shopBaseCost: 560
+  shopSellCost: 56
   canSell: 1
   itemPreFab: {fileID: 0}
   icon: {fileID: 0}
   slot: 6
-  statsToMod: 0
+  statsToMod:
+  - stat: 1
+    bonus: 15
+  - stat: 2
+    bonus: 10
   weaponType: 0
+  canDualWield: 0

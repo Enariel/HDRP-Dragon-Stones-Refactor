@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Buster Sword
   desc: An odd design, elegant. Heavy and enduring.
-  id: Sword_1H_Buster
+  id: Weapon_Sword_1H_Buster
   shopBaseCost: 250
   shopSellCost: 125
   canSell: 1
   itemPreFab: {fileID: 0}
   icon: {fileID: 0}
   slot: 6
-  statsToMod: 0
+  statsToMod:
+  - stat: 4
+    bonus: 10
   weaponType: 3
+  canDualWield: 1

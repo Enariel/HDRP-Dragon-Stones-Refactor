@@ -69,6 +69,8 @@ namespace Dragon_Stones.Inventory_Systems
 		{
 			//TODO: Invoke prompt
 			playerItems.Remove(aItem);
+			//Keeps list from being populated with null values
+			playerItems.RemoveAll(aItem => aItem == null);
 			ItemsChanged?.Invoke();
 		} 
 		#endregion

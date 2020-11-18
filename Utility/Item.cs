@@ -23,7 +23,7 @@ namespace Dragon_Stones.Inventory_Systems
 		[SerializeField] private string id;
 		[SerializeField] private int shopBaseCost;
 		[SerializeField] private int shopSellCost;
-		[SerializeField] private bool canSell = true;
+		[SerializeField] private bool canSell;
 
 		[Header("Visuals")]
 		[SerializeField] private GameObject itemPreFab;
@@ -47,5 +47,9 @@ namespace Dragon_Stones.Inventory_Systems
 
 		//Abstract functions for using items
 		public abstract void UseItem(Item item);
+		public void RemoveFromInventory()
+		{
+			Player_Inventory.instance.RemovePlayerItem(this);
+		}
 	}
 }

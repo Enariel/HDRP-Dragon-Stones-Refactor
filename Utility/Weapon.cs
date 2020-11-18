@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Dragon_Stones.Inventory_Systems
 {
     [CreateAssetMenu(menuName = "Item/Weapon", fileName = "New Weapon")]
-    class Weapon : Equipment
+    public class Weapon : Equipment
     {
         [Header("Weapon Details")]
         [SerializeField] private WeaponType weaponType;
@@ -30,10 +30,9 @@ namespace Dragon_Stones.Inventory_Systems
 		public override void UseItem(Item aItem)
         {
             Debug.Log("This weapon is: " + Id + ". Dual wield enabled: " + CanDualWield);
+
+            Equipment_Manager.instance.EquipItem(aItem as Weapon);
+            RemoveFromInventory();
         }
-        public void EquipWeapon(Weapon aWeapon)
-		{
-            Debug.Log("Weapon equipped");
-		}
     }
 }
