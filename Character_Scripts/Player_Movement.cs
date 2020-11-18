@@ -140,14 +140,20 @@ namespace Dragon_Stones.Character.Movement
             }
         }
         private void InteractWithObject()
-        {
-            //TODO: Rotate player towards object
-            Collider[] colliders = new Collider[0];
-            colliders = Physics.OverlapSphere(this.gameObject.transform.position, interactRange, LayerMask.GetMask("Player"));
+		{
+			//TODO: Rotate player towards object
+            for (int i = 1; i < FindNearbyObjects().Length; i++)
+			{
+                var interactTarget = FindNearbyObjects()[i]?.GetComponent<IInteractable>();
+                interactTarget?.Interact();
+            }
+		}
 
-            var interactTarget = colliders[0].GetComponent<IInteractable>();
-
-            interactTarget?.Interact();
-        }
-    }
+		private Collider[] FindNearbyObjects()
+		{
+			Collider[] colliders = new Collider[0];
+			colliders = Physics.OverlapSphere(this.gameObject.transform.position, interactRange);
+			return colliders;
+		}
+	}
 }

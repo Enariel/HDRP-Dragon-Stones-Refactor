@@ -9,16 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f332281664ca60845abd85b4006c7661, type: 3}
-  m_Name: Base_Equipment
+  m_Script: {fileID: 11500000, guid: b175bb7ead178d148951b3482c7df644, type: 3}
+  m_Name: Buster
   m_EditorClassIdentifier: 
-  title: Basic Equipment
-  desc: A base for equipment.
-  id: Items_Equipment_Head_BaseEquip
-  shopBaseCost: 0
-  shopSellCost: 0
+  title: Buster Sword
+  desc: An odd design, elegant. Heavy and enduring.
+  id: Sword_1H_Buster
+  shopBaseCost: 250
+  shopSellCost: 125
   canSell: 1
   itemPreFab: {fileID: 0}
   icon: {fileID: 0}
-  slot: 1
-  statsToMod: -1
+  slot: 6
+  statsToMod: 0
+  weaponType: 3

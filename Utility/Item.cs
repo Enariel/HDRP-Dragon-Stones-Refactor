@@ -15,29 +15,33 @@ namespace Dragon_Stones.Inventory_Systems
 	[CreateAssetMenu(menuName = "Item")]
 	public abstract class Item : ScriptableObject
 	{
+		#region Variables
 		//Variables
 		[Header("Basic Information")]
-		[SerializeField] private readonly string title;
-		[SerializeField] private readonly string desc;
-		[SerializeField] private readonly string id;
+		[SerializeField] private string title;
+		[SerializeField] private string desc;
+		[SerializeField] private string id;
 		[SerializeField] private int shopBaseCost;
 		[SerializeField] private int shopSellCost;
 		[SerializeField] private bool canSell = true;
 
 		[Header("Visuals")]
 		[SerializeField] private GameObject itemPreFab;
-		[SerializeField] private Sprite icon;
+		[SerializeField] private Sprite icon; 
+		#endregion
 
-		#region Getters
+		#region Getters and Setters
+		public string Title => title;
 
-		public string Title { get => title; }
-		public string Desc { get => desc; }
-		public string Id { get => id; }
-		public int ShopBaseCost { get => shopBaseCost; }
-		public int ShopSellCost { get => shopSellCost; }
-		public bool CanSell { get => canSell; }
-		public GameObject ItemPreFab { get => itemPreFab; }
-		public Sprite Icon { get => icon; }
+		public string Desc => desc;
+
+		public string Id => id;
+
+		public int ShopBaseCost { get => shopBaseCost; set => shopBaseCost = value; }
+		public int ShopSellCost { get => shopSellCost; set => shopSellCost = value; }
+		public bool CanSell { get => canSell; set => canSell = value; }
+		public GameObject ItemPreFab { get => itemPreFab; set => itemPreFab = value; }
+		public Sprite Icon { get => icon; set => icon = value; }
 
 		#endregion
 

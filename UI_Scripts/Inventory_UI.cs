@@ -25,6 +25,7 @@ namespace Dragon_Stones.UI
 		private Inventory_Slot_UI[] itemSlots;
 		//Events
 		Canvas_Manager canvas_Manager;
+
 		#endregion
 
 		#region Unity Methods
@@ -60,6 +61,5 @@ namespace Dragon_Stones.UI
 				}
 			}
 		}
-
 	}
 }

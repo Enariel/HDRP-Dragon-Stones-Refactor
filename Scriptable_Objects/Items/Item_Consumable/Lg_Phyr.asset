@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09eeecc650eb5054f93b7cff30071583, type: 3}
+  m_Name: Lg_Phyr
+  m_EditorClassIdentifier: 
+  title: Big Potion of Phyr
+  desc: A potion that restores a large amount of Phyr over 120 seconds.
+  id: Lg_Consumable_Phyr
+  consumableType: 4
+  potionModifier: 0.4
+  shopBaseCost: 250
+  shopSellCost: 25
+  canSell: 1
+  itemPreFab: {fileID: 8630011676448814138, guid: 63a92daf8fbba3947a4ae776462e34e2, type: 3}
+  icon: {fileID: -1489449107666623888, guid: 5db8179be9244a846888fb885a69859e, type: 3}

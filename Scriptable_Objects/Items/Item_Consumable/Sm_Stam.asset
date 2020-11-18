@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09eeecc650eb5054f93b7cff30071583, type: 3}
+  m_Name: Sm_Stam
+  m_EditorClassIdentifier: 
+  title: Small Restorative
+  desc: Provides restoration in both health and phyr over time.
+  id: Small_Consumable_
+  consumableType: 5
+  potionModifier: 0.1
+  shopBaseCost: 25
+  shopSellCost: 3
+  canSell: 1
+  itemPreFab: {fileID: 4038811166394174433, guid: d58cb57057aaf9a44ac261b61ffc9083, type: 3}
+  icon: {fileID: 4204001005071289975, guid: 5db8179be9244a846888fb885a69859e, type: 3}

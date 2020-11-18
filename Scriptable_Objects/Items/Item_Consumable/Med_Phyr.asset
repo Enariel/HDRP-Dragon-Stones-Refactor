@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09eeecc650eb5054f93b7cff30071583, type: 3}
+  m_Name: Med_Phyr
+  m_EditorClassIdentifier: 
+  title: Medium Potion of Phyr
+  desc: A potion that restores a medium amount of Phyr over 60 seconds.
+  id: Med_Consumable_
+  consumableType: 4
+  potionModifier: 0.25
+  shopBaseCost: 100
+  shopSellCost: 10
+  canSell: 1
+  itemPreFab: {fileID: 8642758111734850510, guid: b7a3982fa35f2e6458236e1823c0361a, type: 3}
+  icon: {fileID: -4618211465416215732, guid: 5db8179be9244a846888fb885a69859e, type: 3}

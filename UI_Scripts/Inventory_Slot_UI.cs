@@ -47,7 +47,18 @@ namespace Dragon_Stones.UI
 
         public void OnRemoveButtonPressed()
 		{
-            Player_Inventory.instance.RemoveItem(item);
+            Player_Inventory.instance.RemovePlayerItem(item);
+		}
+
+        public void UseItem()
+		{
+            item?.UseItem(item);
+
+            if (item is Consumable)
+			{
+                //Remove it from inventory if consumable
+                Player_Inventory.instance.RemovePlayerItem(item);
+			}
 		}
 
     }

@@ -36,12 +36,14 @@ namespace Dragon_Stones.Inventory_Systems
 		{
 			Debug.Log("Interacting with " + item.Title);
 
-			//Add item to player inventory
 			//TODO: Add checks for picking up the item
-			//If additem returns true, we destroy the gameobject
-			pi?.AddPlayerItem(item);
-			Destroy(this.gameObject);
-			//Destory item once added
+			//Check to make sure inventory isnt full
+			if (pi.playerItems.Count < pi.BagSlots)
+			{
+				pi?.AddPlayerItem(item);
+				//Destory item once added
+				Destroy(this.gameObject);
+			}
 		}
 	}
 }

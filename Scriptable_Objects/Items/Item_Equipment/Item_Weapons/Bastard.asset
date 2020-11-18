@@ -9,20 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf1c10c48781a694a99b1474dcc8fe30, type: 3}
-  m_Name: Base_HP
+  m_Script: {fileID: 11500000, guid: b175bb7ead178d148951b3482c7df644, type: 3}
+  m_Name: Bastard
   m_EditorClassIdentifier: 
-  title: Hp Potion
-  desc: This potion heals you for 15 health;
-  id: Item_Consumable_HP15
+  title: Bastard Sword
+  desc: Durable, light, well rounded.
+  id: Sword_1H_Bastard
   shopBaseCost: 0
   shopSellCost: 0
   canSell: 1
   itemPreFab: {fileID: 0}
   icon: {fileID: 0}
-  conType: 1
-  mod: 15
-  canStack: 1
-  maxStack: 0
-  recipe:
-  - {fileID: 11400000, guid: 4b8bf0f955d9aa0449a2d9a532841ba8, type: 2}
+  slot: 6
+  statsToMod: 0
+  weaponType: 3
