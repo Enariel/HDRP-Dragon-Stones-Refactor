@@ -243,13 +243,13 @@ namespace Dragon_Stones.Game_Managers.Time_System
                     monthName = "Imbolk";
                     break;
                 case 1:
-                    monthName = "Östara";
+                    monthName = "Ostara";
                     break;
                 case 2:
                     monthName = "Samhain";
                     break;
                 case 3:
-                    monthName = "Yüle";
+                    monthName = "Yule";
                     break;
             }
         }
